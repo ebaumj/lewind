@@ -1,4 +1,4 @@
-package com.baumannsw.lewind;
+package com.baumannsw.lewind.windData;
 
 import java.util.List;
 

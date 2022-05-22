@@ -1,6 +1,4 @@
-package com.baumannsw.lewind;
-
-import java.util.List;
+package com.baumannsw.lewind.windData;
 
 public interface StationDownloaderCaller {
     public void onStationDownloadCompleted(StationData data);

@@ -1,70 +1,64 @@
 package com.baumannsw.lewind;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.baumannsw.lewind.stations.StationsDataAccessObject;
+import com.baumannsw.lewind.stations.StationsDatabase;
+import com.baumannsw.lewind.stations.WindStation;
+import com.baumannsw.lewind.windData.DataDownloader;
+import com.baumannsw.lewind.windData.DataDownloaderCaller;
+import com.baumannsw.lewind.windData.StationData;
+import com.baumannsw.lewind.windData.StationDownloader;
+import com.baumannsw.lewind.windData.StationDownloaderCaller;
+import com.baumannsw.lewind.windData.WindDataPoint;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
-
-import javax.net.ssl.HttpsURLConnection;
 
 public class MainActivity extends AppCompatActivity implements DataDownloaderCaller, StationDownloaderCaller {
 
     private Button btnLoad;
     private TextView tvData;
-    private final String urlText = "https://letskite.ch/datas/station/34971/graph";
     private final int stBlaise = 34971;
-    private final String TAG = "LE_WIND";
-    private final String USER_AGENT = "Mozilla/5.0";
+    private final int estavayer = 15265;
+
+    private final int[] supportedStations = {34971, 15265, 2429, 41825, 2478, 31320};
+    private final String[] names = {"St. Blaise", "Estavayer", "Yvonand", "Cudrefin", "La Brévine", "Lac De Joux"};
+
+    private List<WindStation> stationsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // GUI Elements
         btnLoad = findViewById(R.id.btnLoad);
         tvData = findViewById(R.id.tvData);
 
-        btnLoad.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startDownload();
-            }
-        });
-
-        tvData.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                tvData.setText("");
-            }
-        });
+        // Setup Database, not Working
+        StationsDataAccessObject stationsDatabase = Room.databaseBuilder(getApplicationContext(), StationsDatabase.class, "database-name").build().stationsDao();
+        stationsList = stationsDatabase.getAll();
+        if(stationsList.size() == 0) {
+            for (int i = 0; i < supportedStations.length; i++)
+                stationsDatabase.insertAll(new WindStation(supportedStations[i], names[i], 0, 0));
+            stationsList = stationsDatabase.getAll();
+        }
+        tvData.setText(stationsDatabase.findById(supportedStations[0]).getDisplayName());
     }
 
     private void startGraphDownload() {
         new DataDownloader(this, stBlaise).execute();
     }
     private void startDownload() {
-        new StationDownloader(this, stBlaise).execute();
+        new StationDownloader(this, estavayer).execute();
     }
 
     @Override
@@ -80,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements DataDownloaderCal
 
     @Override
     public void onStationDownloadCompleted(StationData data) {
-        tvData.setText(data.getLastUpdateString("yyyy.MM.dd HH:mm:ss"));
+
     }
 
     @Override

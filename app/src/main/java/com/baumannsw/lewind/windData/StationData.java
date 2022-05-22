@@ -1,4 +1,4 @@
-package com.baumannsw.lewind;
+package com.baumannsw.lewind.windData;
 
 import org.json.JSONObject;
 
@@ -36,21 +36,36 @@ public class StationData {
 
     private Date lastUpdate;
     private int lastUpdateMin;
-    private int humidity;
+    private double humidity;
     private int direction;
-    private float windAvg;
-    private float windGust;
-    private float temperature;
+    private double windAvg;
+    private double windGust;
+    private double temperature;
 
     public StationData(JSONObject data) throws Exception {
+        Object temp;
         SimpleDateFormat sdn = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
-        lastUpdate = sdn.parse(data.getString("last_update"));
-        lastUpdateMin = data.getInt("last_update_min");
-        humidity = Integer.parseInt(data.getString("humidite"));
-        direction = data.getInt("vent_direction");
-        windAvg = data.getInt("vent_vitesse");
-        windGust = data.getInt("vent_rafale");
-        temperature = Float.parseFloat(data.getString("temp"));
+        temp = data.get("last_update");
+        if(temp != null)
+            lastUpdate = sdn.parse((String) temp);
+        temp = data.get("last_update_min");
+        if(temp != null)
+            lastUpdateMin = (int) temp;
+        temp = data.get("humidite");
+        if(temp != null)
+            humidity = Double.parseDouble((String) temp);
+        temp = data.get("vent_direction");
+        if(temp != null)
+            direction = (int) temp;
+        temp = data.get("vent_vitesse");
+        if(temp != null)
+            windAvg = (double) temp;
+        temp = data.get("vent_rafale");
+        if(temp != null)
+            windGust = (double) temp;
+        temp = data.get("temp");
+        if(temp != null)
+            temperature = Double.parseDouble((String) temp);
     }
 
     public Date getLastUpdate() {
@@ -58,6 +73,8 @@ public class StationData {
     }
 
     public String getLastUpdateString(String format) {
+        if(lastUpdate == null)
+            return null;
         SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.GERMAN);
         sdf.setTimeZone(TimeZone.getDefault());
         return sdf.format(lastUpdate);
@@ -76,9 +93,7 @@ public class StationData {
         return retVal;
     }
 
-    public int getHumidity() {
-        return humidity;
-    }
+    public double getHumidity() { return humidity; }
 
     public int getDirection() {
         return direction;
@@ -94,15 +109,13 @@ public class StationData {
         return text[index];
     }
 
-    public float getWindAvg() {
-        return windAvg;
-    }
+    public double getWindAvg() { return windAvg; }
 
-    public float getWindGust() {
+    public double getWindGust() {
         return windGust;
     }
 
-    public float getTemperature() {
+    public double getTemperature() {
         return temperature;
     }
 }

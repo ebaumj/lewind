@@ -1,8 +1,7 @@
-package com.baumannsw.lewind;
+package com.baumannsw.lewind.windData;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,7 +18,7 @@ public class DataDownloader extends AsyncTask<String, String, String> {
     private String urlText;
     private List<WindDataPoint> data;
 
-    DataDownloader(DataDownloaderCaller caller, int id) {
+    public DataDownloader(DataDownloaderCaller caller, int id) {
         this.caller = caller;
         this.urlText = "https://letskite.ch/datas/station/" + id + "/graph";
     }

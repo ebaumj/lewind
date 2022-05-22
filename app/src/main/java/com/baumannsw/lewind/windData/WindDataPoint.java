@@ -1,4 +1,4 @@
-package com.baumannsw.lewind;
+package com.baumannsw.lewind.windData;
 
 import org.json.JSONArray;
 
@@ -11,29 +11,41 @@ import java.util.TimeZone;
 public class WindDataPoint {
     private int direction;
     private Date date;
-    private float average;
-    private float gust;
-    private float temperature;
+    private double average;
+    private double gust;
+    private double temperature;
 
     public WindDataPoint(JSONArray array) throws Exception {
-        date = Date.from(Instant.ofEpochMilli(Long.parseLong(array.get(0).toString())));
-        average = (float) array.getDouble(1);
-        gust = (float) array.getDouble(2);
-        direction = (int) array.getInt(3);
-        if(direction >= 360)
-            direction -= 360;
-        temperature = Float.parseFloat(array.getString(4));
+        Object temp;
+        temp = array.get(0);
+        if(temp != null)
+            date = Date.from(Instant.ofEpochMilli(Long.parseLong(temp.toString())));
+        temp = array.get(1);
+        if(temp != null)
+            average = (double) temp;
+        temp = array.get(2);
+        if(temp != null)
+            gust = (double) temp;
+        temp = array.get(3);
+        if(temp != null) {
+            direction = (int) temp;
+            if (direction >= 360)
+                direction -= 360;
+        }
+        temp = array.get(4);
+        if(temp != null)
+            temperature = Double.parseDouble((String) temp);
     }
 
-    public float getAverage() {
+    public double getAverage() {
         return average;
     }
 
-    public float getGust() {
+    public double getGust() {
         return gust;
     }
 
-    public float getTemperature() {
+    public double getTemperature() {
         return temperature;
     }
 
@@ -42,6 +54,8 @@ public class WindDataPoint {
     }
 
     public String getDateString(String format) {
+        if(date == null)
+            return null;
         SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.GERMAN);
         sdf.setTimeZone(TimeZone.getDefault());
         return sdf.format(date);
