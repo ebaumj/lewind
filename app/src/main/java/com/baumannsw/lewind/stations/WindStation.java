@@ -29,7 +29,7 @@ public class WindStation {
     }
 
     public void setDisplayName(String displayName) {
-        if(displayName == "")
+        if(displayName.equals(""))
             this.displayName = name;
         else
             this.displayName = displayName;

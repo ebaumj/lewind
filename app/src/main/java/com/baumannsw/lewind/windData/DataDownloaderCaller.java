@@ -3,6 +3,6 @@ package com.baumannsw.lewind.windData;
 import java.util.List;
 
 public interface DataDownloaderCaller {
-    public void onDownloadCompleted(List<WindDataPoint> data);
-    public void onDownloadFailed(String errorMessage);
+    void onDownloadCompleted(List<WindDataPoint> data);
+    void onDownloadFailed(String errorMessage);
 }
