@@ -24,6 +24,12 @@ public interface StationsDataAccessObject {
     @Insert
     void insertAll(WindStation... stations);
 
+    @Insert
+    void insert(WindStation station);
+
     @Delete
     void delete(WindStation station);
+
+    @Query("SELECT COUNT(id) FROM windstation")
+    int count();
 }

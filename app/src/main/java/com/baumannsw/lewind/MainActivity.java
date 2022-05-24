@@ -2,10 +2,8 @@ package com.baumannsw.lewind;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
-import androidx.room.RoomDatabase;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,13 +41,11 @@ public class MainActivity extends AppCompatActivity implements DataDownloaderCal
         btnLoad = findViewById(R.id.btnLoad);
         tvData = findViewById(R.id.tvData);
 
-        // Setup Database, not Working
-        StationsDataAccessObject stationsDatabase = Room.databaseBuilder(getApplicationContext(), StationsDatabase.class, "database-name").build().stationsDao();
-        stationsList = stationsDatabase.getAll();
-        if(stationsList.size() == 0) {
+        // Setup Database, working, still move to another Thread
+        StationsDataAccessObject stationsDatabase = Room.databaseBuilder(getApplicationContext(), StationsDatabase.class, "WindStationsDatabase").allowMainThreadQueries().build().stationsDao();
+        if(stationsDatabase.count() == 0) {
             for (int i = 0; i < supportedStations.length; i++)
-                stationsDatabase.insertAll(new WindStation(supportedStations[i], names[i], 0, 0));
-            stationsList = stationsDatabase.getAll();
+                stationsDatabase.insert(new WindStation(supportedStations[i], names[i], 0, 0));
         }
         tvData.setText(stationsDatabase.findById(supportedStations[0]).getDisplayName());
     }
