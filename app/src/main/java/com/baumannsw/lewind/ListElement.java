@@ -15,9 +15,9 @@ public class ListElement {
         id = station.getId();
         name = station.getDisplayName();
         if(data != null) {
-            rotation = data.getDirection() - 90;
-            if(rotation < 0)
-                rotation = 0;
+            rotation = data.getDirection() + 270;
+            if(rotation > 360)
+                rotation -= 360;
             wind = data.getWindAvg();
         }
         else {

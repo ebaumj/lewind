@@ -6,6 +6,7 @@ import androidx.room.Room;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -34,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements StationDownloader
     private final int[] supportedStations = {34971, 15265, 2429, 41825, 2478, 31320};
     private final String[] names = {"St. Blaise", "Estavayer", "Yvonand", "Cudrefin", "La Brévine", "Lac De Joux"};
 
+    private final String TAG = "MAIN_ACTIVITY";
+
     StationsDataAccessObject stationsDatabase;
 
     private ListView listStations;
@@ -49,22 +52,35 @@ public class MainActivity extends AppCompatActivity implements StationDownloader
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(getResources().getString(R.string.activity_title_main));
 
-        // Setup Database, working, still move to another Thread
-        stationsDatabase = Room.databaseBuilder(getApplicationContext(), StationsDatabase.class, "WindStationsDatabase").allowMainThreadQueries().build().stationsDao();
-        if(stationsDatabase.count() == 0) {
-            for (int i = 0; i < supportedStations.length; i++)
-                stationsDatabase.insert(new WindStation(supportedStations[i], names[i], 0, 0));
-        }
-
+        // UI Elements
         listStations = findViewById(R.id.listStations);
         btnEdit = findViewById(R.id.btnEdit);
 
+        // Interactions
+        listStations.setOnItemClickListener((parent, view, position, id) -> startStationActivity((int)id));
+        btnEdit.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), EditActivity.class);
+            startActivity(intent);
+        });
+
+        // Setup Database and get Data
+        new Thread(() -> {
+            stationsDatabase = Room.databaseBuilder(getApplicationContext(), StationsDatabase.class, "WindStationsDatabase").allowMainThreadQueries().build().stationsDao();
+            // Fill Database
+            if(stationsDatabase.count() == 0) {
+                for (int i = 0; i < supportedStations.length; i++)
+                    stationsDatabase.insert(new WindStation(supportedStations[i], names[i], 0, 0));
+            }
+            // Update Listview
+            updateFromDatabase();
+        }).run();
+    }
+
+    private void updateFromDatabase() {
         listElements = new ArrayList<>();
         elementsCount = stationsDatabase.count();
-
-        for (WindStation station : stationsDatabase.getAll()) {
+        for (WindStation station : stationsDatabase.getAll())
             new StationDownloader(this, station.getId()).execute();
-        }
     }
 
     private void startStationActivity(int id) {
@@ -77,10 +93,7 @@ public class MainActivity extends AppCompatActivity implements StationDownloader
     private void checkUpdate() {
         if(listElements.size() >= elementsCount) {
             StationsListAdapter listAdapter = new StationsListAdapter(getApplicationContext(), listElements);
-            runOnUiThread(() -> {
-                listStations.setAdapter(listAdapter);
-                listStations.setOnItemClickListener((parent, view, position, id) -> startStationActivity((int)id));
-            });
+            runOnUiThread(() -> listStations.setAdapter(listAdapter));
         }
     }
 

@@ -1,6 +1,7 @@
 package com.baumannsw.lewind;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,10 +41,8 @@ public class StationsListAdapter extends BaseAdapter {
         convertView = inflater.inflate(R.layout.station_list_element, null);
         TextView tvName = convertView.findViewById(R.id.tvStationNameList);
         ImageView imgArrow = convertView.findViewById(R.id.imgArrowList);
-        ImageButton btnHistory = convertView.findViewById(R.id.btnHistoryList);
         LinearLayout layoutColor = convertView.findViewById(R.id.layoutColorList);
 
-        btnHistory.setImageDrawable(convertView.getResources().getDrawable(android.R.drawable.ic_menu_recent_history, context.getTheme()));
         imgArrow.setImageDrawable(convertView.getResources().getDrawable(R.drawable.left_arrow_icon_free_svg_file, context.getTheme()));
         tvName.setText(stations.get(position).getName());
 

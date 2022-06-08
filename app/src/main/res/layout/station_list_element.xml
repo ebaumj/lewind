@@ -5,17 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="80dp">
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/layoutColorList"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:clickable="true"
-        android:focusable="true"></LinearLayout>
-
     <TextView
         android:id="@+id/tvStationNameList"
         android:layout_width="wrap_content"
@@ -35,7 +24,7 @@
         android:layout_marginEnd="8dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnHistoryList"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
@@ -50,14 +39,4 @@
             app:srcCompat="@drawable/left_arrow_icon_free_svg_file" />
     </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/btnHistoryList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:elevation="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_recent_history" />
 </androidx.constraintlayout.widget.ConstraintLayout>

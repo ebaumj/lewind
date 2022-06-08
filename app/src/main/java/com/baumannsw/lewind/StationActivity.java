@@ -30,7 +30,7 @@ public class StationActivity extends AppCompatActivity implements StationDownloa
     private String name;
     private TextView tvStationName, tvWindspeed, tvGusts, tvTemp, tvHum, tvPreassure, tvDirection, tvUpdate;
     private ImageView imgRose;
-    private FloatingActionButton btnReload;
+    private FloatingActionButton btnReload, btnHistory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +54,12 @@ public class StationActivity extends AppCompatActivity implements StationDownloa
         tvUpdate = findViewById(R.id.tvUpdate);
         imgRose = findViewById(R.id.imgRose);
         btnReload = findViewById(R.id.btnReload);
+        btnHistory =findViewById(R.id.btnHistory);
 
         tvStationName.setText(name);
 
         btnReload.setOnClickListener(v -> loadData());
+        btnHistory.setOnClickListener(v -> {Toast.makeText(getApplicationContext(), "History not implemented yet!", Toast.LENGTH_SHORT).show();});
 
         loadData();
     }

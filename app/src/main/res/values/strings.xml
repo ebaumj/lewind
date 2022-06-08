@@ -20,4 +20,5 @@
     <string name="last_updated_minutes">%1$s ago</string>
     <string name="activity_title_station_data">Wind Station Data</string>
     <string name="activity_title_main">Stations</string>
+    <string name="activity_title_edit">Edit Stations</string>
 </resources>
