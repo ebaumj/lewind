@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">Le Wind</string>
+    <string name="not_found_symbol">-</string>
+    <string name="wind_unit"> kts</string>
+    <string name="temp_unit"> °C</string>
+    <string name="hum_unit"> %</string>
+    <string name="preassure_unit"> hPa</string>
+    <string name="direction_unit"> °</string>
+    <!-- Toasts -->
+    <string name="invalid_id">Invalid Station ID</string>
+    <string name="station_download_failed">Faild to Download Data</string>
+    <!-- Labels -->
+    <string name="label_temperature">Temperature</string>
+    <string name="label_wind">Wind Speed</string>
+    <string name="label_gust">Wind Gusts</string>
+    <string name="label_humidity">Humidity</string>
+    <string name="label_preassure">Pressure</string>
+    <string name="label_last_update">Last Updated:</string>
+    <!-- Other -->
+    <string name="last_updated_minutes">%1$s ago</string>
+    <string name="activity_title_station_data">Wind Station Data</string>
+    <string name="activity_title_main">Stations</string>
 </resources>

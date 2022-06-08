@@ -34,43 +34,66 @@ public class StationData {
     }
      */
 
+    private int id;
     private Date lastUpdate;
-    private int lastUpdateMin;
-    private double humidity;
-    private int direction;
-    private double windAvg;
-    private double windGust;
-    private double temperature;
+    private Integer lastUpdateMin;
+    private Double humidity;
+    private Integer direction;
+    private Double windAvg;
+    private Double windGust;
+    private Double temperature;
+    private Double preassure;
+    private String sourceLink;
 
     public StationData(JSONObject data) throws Exception {
         Object temp;
         SimpleDateFormat sdn = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
-        temp = data.get("last_update");
-        if(temp != null)
-            lastUpdate = sdn.parse((String) temp);
-        temp = data.get("last_update_min");
-        if(temp != null)
-            lastUpdateMin = (int) temp;
-        temp = data.get("humidite");
-        if(temp != null)
-            humidity = Double.parseDouble((String) temp);
-        temp = data.get("vent_direction");
-        if(temp != null)
-            direction = (int) temp;
-        temp = data.get("vent_vitesse");
-        if(temp != null)
-            windAvg = (double) temp;
-        temp = data.get("vent_rafale");
-        if(temp != null)
-            windGust = (double) temp;
-        temp = data.get("temp");
-        if(temp != null)
-            temperature = Double.parseDouble((String) temp);
+        id = data.getInt("id");
+
+        try { lastUpdate = sdn.parse((String) data.get("last_update")); } catch(Exception e) { lastUpdate = null; }
+
+        try { lastUpdateMin = (Integer) data.get("last_update_min"); } catch(Exception e) { lastUpdateMin = null; }
+        if(lastUpdateMin == null)
+            try { lastUpdateMin = Integer.parseInt((String) data.get("last_update_min")); } catch(Exception e) { lastUpdateMin = null; }
+
+        try { humidity = (Double) data.get("humidite"); } catch(Exception e) { humidity = null; }
+        if(humidity == null)
+            try { humidity = new Double((Integer) data.get("humidite")); } catch(Exception e) { humidity = null; }
+        if(humidity == null)
+            try { humidity = Double.parseDouble((String) data.get("humidite")); } catch(Exception e) { humidity = null; }
+
+        try { direction = (Integer) data.get("vent_direction"); } catch(Exception e) { direction = null; }
+        if(direction == null)
+            try { direction = Integer.parseInt((String) data.get("vent_direction")); } catch(Exception e) { direction = null; }
+
+        try { windAvg = (Double) data.get("vent_vitesse"); } catch(Exception e) { windAvg = null; }
+        if(windAvg == null)
+            try { windAvg = new Double((Integer) data.get("vent_vitesse")); } catch(Exception e) { windAvg = null; }
+        if(windAvg == null)
+            try { windAvg = Double.parseDouble((String) data.get("vent_vitesse")); } catch(Exception e) { windAvg = null; }
+
+        try { windGust = (Double) data.get("vent_rafale"); } catch(Exception e) { windGust = null; }
+        if(windGust == null)
+            try { windGust = new Double((Integer) data.get("vent_rafale")); } catch(Exception e) { windGust = null; }
+        if(windGust == null)
+            try { windGust = Double.parseDouble((String) data.get("vent_rafale")); } catch(Exception e) { windGust = null; }
+
+        try { temperature = (Double) data.get("temp"); } catch(Exception e) { temperature = null; }
+        if(temperature == null)
+            try { temperature = new Double((Integer) data.get("temp")); } catch(Exception e) { temperature = null; }
+        if(temperature == null)
+            try { temperature = Double.parseDouble((String) data.get("temp")); } catch(Exception e) { temperature = null; }
+
+        try { preassure = (Double) data.get("pression"); } catch(Exception e) { preassure = null; }
+        if(preassure == null)
+            try { preassure = new Double((Integer) data.get("pression")); } catch(Exception e) { preassure = null; }
+        if(preassure == null)
+            try { preassure = Double.parseDouble((String) data.get("pression")); } catch(Exception e) { preassure = null; }
+
+        try { sourceLink = (String) data.get("source_lien"); } catch (Exception e) { sourceLink = null; }
     }
 
-    public Date getLastUpdate() {
-        return lastUpdate;
-    }
+    public Date getLastUpdate() { return lastUpdate; }
 
     public String getLastUpdateString(String format) {
         if(lastUpdate == null)
@@ -80,9 +103,7 @@ public class StationData {
         return sdf.format(lastUpdate);
     }
 
-    public int getLastUpdateMin() {
-        return lastUpdateMin;
-    }
+    public Integer getLastUpdateMin() { return lastUpdateMin; }
 
     public String getLastUpdateMinString() {
         int hours = lastUpdateMin / 60;
@@ -93,11 +114,9 @@ public class StationData {
         return retVal;
     }
 
-    public double getHumidity() { return humidity; }
+    public Double getHumidity() { return humidity; }
 
-    public int getDirection() {
-        return direction;
-    }
+    public Integer getDirection() { return direction; }
 
     public String getDirectionString() {
         String[] text = {"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"};
@@ -109,13 +128,15 @@ public class StationData {
         return text[index];
     }
 
-    public double getWindAvg() { return windAvg; }
+    public Double getWindAvg() { return windAvg; }
 
-    public double getWindGust() {
-        return windGust;
-    }
+    public Double getWindGust() { return windGust; }
 
-    public double getTemperature() {
-        return temperature;
-    }
+    public Double getTemperature() { return temperature; }
+
+    public Double getPreassure() { return preassure; }
+
+    public String getSourceLink() { return sourceLink; }
+
+    public int getId() { return id; }
 }

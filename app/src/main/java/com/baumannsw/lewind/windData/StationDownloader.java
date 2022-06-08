@@ -15,10 +15,12 @@ public class StationDownloader extends AsyncTask<String, String, String> {
     private StationDownloaderCaller caller;
     private String urlText;
     private StationData data;
+    private int id;
 
     public StationDownloader(StationDownloaderCaller caller, int id) {
         this.caller = caller;
         urlText = "https://letskite.ch/datas/station/" + id;
+        this.id = id;
     }
 
     @Override
@@ -34,11 +36,11 @@ public class StationDownloader extends AsyncTask<String, String, String> {
                 text = reader.readLine();
             }
             else
-                caller.onStationDownloadFailed("HTTP Code: " + responseCode);
+                caller.onStationDownloadFailed("HTTP Code: " + responseCode, id);
             connection.disconnect();
         } catch (Exception e) {
             Log.e("Downloader", "Exception: " + e.getMessage());
-            caller.onStationDownloadFailed(e.getMessage());
+            caller.onStationDownloadFailed(e.getMessage(), id);
         }
         return text;
     }
@@ -50,9 +52,9 @@ public class StationDownloader extends AsyncTask<String, String, String> {
         try {
             json = new JSONObject(s);
             data = new StationData(json);
-            caller.onStationDownloadCompleted(data);
+            caller.onStationDownloadCompleted(data, id);
         } catch (Exception e) {
-            caller.onStationDownloadFailed("JSON Error: " + e.getMessage());
+            caller.onStationDownloadFailed("JSON Error: " + e.getMessage(), id);
         }
     }
 }
