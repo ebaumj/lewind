@@ -30,11 +30,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements StationDownloaderCaller {
 
-    private final int stBlaise = 34971;
-
-    private final long[] supportedStations = {34971, 15265, 2429, 41825, 2478, 31320};
-    private final String[] names = {"St. Blaise", "Estavayer", "Yvonand", "Cudrefin", "La Brévine", "Lac De Joux"};
-
     private final String TAG = "MAIN_ACTIVITY";
 
     StationsDataAccessObject stationsDatabase;

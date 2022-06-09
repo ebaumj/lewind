@@ -1,5 +1,7 @@
 package com.baumannsw.lewind.windData;
 
+import androidx.room.ColumnInfo;
+
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
@@ -44,11 +46,17 @@ public class StationData {
     private Double temperature;
     private Double preassure;
     private String sourceLink;
+    private double latitude;
+    private double longitude;
+    private String name;
 
     public StationData(JSONObject data) throws Exception {
         Object temp;
         SimpleDateFormat sdn = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
         id = data.getInt("id");
+        name = data.getString("name");
+        latitude = data.getDouble("latitute");
+        longitude = data.getDouble("longitude");
 
         try { lastUpdate = sdn.parse((String) data.get("last_update")); } catch(Exception e) { lastUpdate = null; }
 
@@ -137,6 +145,12 @@ public class StationData {
     public Double getPreassure() { return preassure; }
 
     public String getSourceLink() { return sourceLink; }
+
+    public double getLatitude() { return latitude; }
+
+    public double getLongitude() { return longitude; }
+
+    public String getName() { return name; }
 
     public long getId() { return id; }
 }
