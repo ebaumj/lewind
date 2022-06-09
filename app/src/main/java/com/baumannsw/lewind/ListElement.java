@@ -6,7 +6,7 @@ import com.baumannsw.lewind.windData.StationData;
 import java.util.ArrayList;
 
 public class ListElement {
-    private int id;
+    private long id;
     private String name;
     private Double wind;
     private Integer rotation;
@@ -30,7 +30,7 @@ public class ListElement {
         return name;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

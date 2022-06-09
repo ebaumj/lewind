@@ -18,7 +18,7 @@ public class DataDownloader extends AsyncTask<String, String, String> {
     private String urlText;
     private List<WindDataPoint> data;
 
-    public DataDownloader(DataDownloaderCaller caller, int id) {
+    public DataDownloader(DataDownloaderCaller caller, long id) {
         this.caller = caller;
         this.urlText = "https://letskite.ch/datas/station/" + id + "/graph";
     }

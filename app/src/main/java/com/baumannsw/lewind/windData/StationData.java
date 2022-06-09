@@ -34,7 +34,7 @@ public class StationData {
     }
      */
 
-    private int id;
+    private long id;
     private Date lastUpdate;
     private Integer lastUpdateMin;
     private Double humidity;
@@ -138,5 +138,5 @@ public class StationData {
 
     public String getSourceLink() { return sourceLink; }
 
-    public int getId() { return id; }
+    public long getId() { return id; }
 }

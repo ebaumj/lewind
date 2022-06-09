@@ -15,9 +15,9 @@ public class StationDownloader extends AsyncTask<String, String, String> {
     private StationDownloaderCaller caller;
     private String urlText;
     private StationData data;
-    private int id;
+    private long id;
 
-    public StationDownloader(StationDownloaderCaller caller, int id) {
+    public StationDownloader(StationDownloaderCaller caller, long id) {
         this.caller = caller;
         urlText = "https://letskite.ch/datas/station/" + id;
         this.id = id;

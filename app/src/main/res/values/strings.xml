@@ -21,4 +21,13 @@
     <string name="activity_title_station_data">Wind Station Data</string>
     <string name="activity_title_main">Stations</string>
     <string name="activity_title_edit">Edit Stations</string>
+    <string name="activity_title_find">Find Stations</string>
+    <string name="dialog_ok">Ok</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_delete_text">Delete Station %1$s</string>
+    <string name="dialog_edit_text">Rename Station %1$s</string>
+    <string name="dialog_edit_original_name">Original Name: %1$s</string>
+    <string name="title_activity_station_finder">StationFinderActivity</string>
+    <string name="btn_add_station_found">Add %1$s</string>
+    <string name="btn_add_station">Click on Station</string>
 </resources>

@@ -28,23 +28,22 @@ public class StationActivity extends AppCompatActivity implements StationDownloa
 
     private int id;
     private String name;
-    private TextView tvStationName, tvWindspeed, tvGusts, tvTemp, tvHum, tvPreassure, tvDirection, tvUpdate;
+    private TextView tvWindspeed, tvGusts, tvTemp, tvHum, tvPreassure, tvDirection, tvUpdate;
     private ImageView imgRose;
     private FloatingActionButton btnReload, btnHistory;
+    private ActionBar actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_station);
 
-        ActionBar actionBar = getSupportActionBar();
+        actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(getResources().getString(R.string.activity_title_station_data));
 
         id = getIntent().getIntExtra(EXTRA_STATION_ID, 0);
         name = getIntent().getStringExtra(EXTRA_STATION_NAME);
 
-        tvStationName = findViewById(R.id.tvStationName);
         tvWindspeed = findViewById(R.id.tvWindspeed);
         tvGusts = findViewById(R.id.tvGusts);
         tvTemp = findViewById(R.id.tvTemp);
@@ -56,7 +55,7 @@ public class StationActivity extends AppCompatActivity implements StationDownloa
         btnReload = findViewById(R.id.btnReload);
         btnHistory =findViewById(R.id.btnHistory);
 
-        tvStationName.setText(name);
+        actionBar.setTitle(name);
 
         btnReload.setOnClickListener(v -> loadData());
         btnHistory.setOnClickListener(v -> {Toast.makeText(getApplicationContext(), "History not implemented yet!", Toast.LENGTH_SHORT).show();});
@@ -130,7 +129,7 @@ public class StationActivity extends AppCompatActivity implements StationDownloa
     }
 
     @Override
-    public void onStationDownloadCompleted(StationData data, int id) {
+    public void onStationDownloadCompleted(StationData data, long id) {
         runOnUiThread(() -> {
             setWindSpeedColors(data.getWindAvg(), data.getWindGust());
             if(data.getWindAvg() != null)
@@ -158,7 +157,7 @@ public class StationActivity extends AppCompatActivity implements StationDownloa
     }
 
     @Override
-    public void onStationDownloadFailed(String errorMessage, int id) {
+    public void onStationDownloadFailed(String errorMessage, long id) {
         Log.e(TAG, errorMessage);
         runOnUiThread(() -> Toast.makeText(getApplicationContext(), getResources().getString(R.string.station_download_failed), Toast.LENGTH_SHORT).show());
     }

@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey;
 @Entity
 public class WindStation {
     @PrimaryKey
-    private int id;
+    private long id;
     @ColumnInfo
     private String name;
     @ColumnInfo
@@ -19,13 +19,22 @@ public class WindStation {
     @ColumnInfo
     private double longitude;
 
-    public WindStation(int id, String name, double latitude, double longitude) {
+    public WindStation(long id, String name, double latitude, double longitude) {
         this.id = id;
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
         displayName = name;
         description = "";
+    }
+
+    public WindStation(WindStation station) {
+        this.id = station.getId();
+        this.name = station.getName();
+        this.latitude = station.getLatitude();
+        this.longitude = station.getLongitude();
+        displayName = station.getDisplayName();
+        description = station.getDescription();
     }
 
     public void setDisplayName(String displayName) {
@@ -39,7 +48,7 @@ public class WindStation {
         this.description = description;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements StationDownloader
 
     private final int stBlaise = 34971;
 
-    private final int[] supportedStations = {34971, 15265, 2429, 41825, 2478, 31320};
+    private final long[] supportedStations = {34971, 15265, 2429, 41825, 2478, 31320};
     private final String[] names = {"St. Blaise", "Estavayer", "Yvonand", "Cudrefin", "La Brévine", "Lac De Joux"};
 
     private final String TAG = "MAIN_ACTIVITY";
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements StationDownloader
         setContentView(R.layout.activity_main);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(getResources().getString(R.string.activity_title_main));
+        actionBar.setTitle(R.string.app_name);
 
         // UI Elements
         listStations = findViewById(R.id.listStations);
@@ -66,12 +66,6 @@ public class MainActivity extends AppCompatActivity implements StationDownloader
         // Setup Database and get Data
         new Thread(() -> {
             stationsDatabase = Room.databaseBuilder(getApplicationContext(), StationsDatabase.class, "WindStationsDatabase").allowMainThreadQueries().build().stationsDao();
-            // Fill Database
-            if(stationsDatabase.count() == 0) {
-                for (int i = 0; i < supportedStations.length; i++)
-                    stationsDatabase.insert(new WindStation(supportedStations[i], names[i], 0, 0));
-            }
-            // Update Listview
             updateFromDatabase();
         }).run();
     }
@@ -98,13 +92,13 @@ public class MainActivity extends AppCompatActivity implements StationDownloader
     }
 
     @Override
-    public void onStationDownloadCompleted(StationData data, int id) {
+    public void onStationDownloadCompleted(StationData data, long id) {
         listElements.add(new ListElement(stationsDatabase.findById(id), data));
         checkUpdate();
     }
 
     @Override
-    public void onStationDownloadFailed(String errorMessage, int id) {
+    public void onStationDownloadFailed(String errorMessage, long id) {
         listElements.add(new ListElement(stationsDatabase.findById(id), null));
         checkUpdate();
     }

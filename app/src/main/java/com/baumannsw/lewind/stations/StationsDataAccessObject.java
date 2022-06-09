@@ -13,10 +13,10 @@ public interface StationsDataAccessObject {
     List<WindStation> getAll();
 
     @Query("SELECT * FROM windstation WHERE id IN (:userIds)")
-    List<WindStation> loadAllByIds(int[] userIds);
+    List<WindStation> loadAllByIds(long[] userIds);
 
     @Query("SELECT * FROM windstation WHERE id = :id LIMIT 1")
-    WindStation findById(int id);
+    WindStation findById(long id);
 
     @Query("SELECT * FROM windstation WHERE displayName LIKE :name LIMIT 1")
     WindStation findByName(String name);
