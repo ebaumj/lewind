@@ -59,6 +59,9 @@ public class StationFindActivity extends AppCompatActivity implements OnMapReady
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_station_find);
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle(R.string.activity_title_find);
+
         btnAdd = findViewById(R.id.btnAddStation);
 
         //locationClient = LocationServices.getFusedLocationProviderClient(this);
