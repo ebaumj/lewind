@@ -1,0 +1,43 @@
+<resources>
+    <!-- About App -->
+    <string name="app_name">Le Wind</string>
+    <string name="app_version">1.0.0</string>
+    <string name="creator">Janis M. Baumann</string>
+    <string name="data_provider"><a href="https://letskite.ch/">letskite.ch</a></string>
+    <string name="email"><a href="mailto:janis.baumann@gmail.com">janis.baumann@gmail.com</a></string>
+    <!-- Symbols and Units -->
+    <string name="not_found_symbol">-</string>
+    <string name="wind_unit"> kts</string>
+    <string name="temp_unit"> °C</string>
+    <string name="hum_unit"> %</string>
+    <string name="preassure_unit"> hPa</string>
+    <string name="direction_unit"> °</string>
+    <!-- Toasts -->
+    <string name="invalid_id">Ungültige ID</string>
+    <string name="station_download_failed">Daten konnten nicht geladen werden</string>
+    <string name="station_info_fail">Infos zur Windstation konnten nicht geladen werden</string>
+    <string name="all_stations_fail">Windstationen konnten nicht geladen werden</string>
+    <!-- Labels -->
+    <string name="label_temperature">Temperatur</string>
+    <string name="label_wind">Mittelwind</string>
+    <string name="label_gust">Windböen</string>
+    <string name="label_humidity">Luftfeuchtigkeit</string>
+    <string name="label_preassure">Luftdruck</string>
+    <string name="label_last_update">Zuletzt aktualisiert:</string>
+    <string name="label_version">Version</string>
+    <string name="label_creator">Erstellt von</string>
+    <string name="label_data_provider">Wetterdaten von</string>
+    <string name="label_email">Email</string>
+    <!-- Dialog -->
+    <string name="dialog_ok">Ok</string>
+    <string name="dialog_cancel">Abbrechen</string>
+    <string name="dialog_delete_text">Löschen</string>
+    <string name="dialog_edit_text">Umbenennen</string>
+    <string name="dialog_wait_text">Lade Ressourcen</string>
+    <!-- Activity Title -->
+    <string name="activity_title_edit">Sattionen bearbeiten</string>
+    <string name="activity_title_find">Stationen finden</string>
+    <!-- Other -->
+    <string name="last_updated_minutes">vor %1$s</string>
+    <string name="btn_add_station">Klicke auf Station</string>
+</resources>

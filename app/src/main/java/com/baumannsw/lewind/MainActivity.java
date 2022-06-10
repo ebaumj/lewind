@@ -1,12 +1,15 @@
 package com.baumannsw.lewind;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
 import android.content.ComponentName;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -43,17 +46,26 @@ public class MainActivity extends AppCompatActivity implements StationDownloader
     private FloatingActionButton btnEdit;
     private ArrayList<ListElement> listElements;
     private int elementsCount;
+    private AlertDialog waitDialog;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
+        MenuItem item = findViewById(R.id.action_info);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.action_info) {
-            Toast.makeText(getApplicationContext(), "Info", Toast.LENGTH_SHORT).show();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setView(getLayoutInflater().inflate(R.layout.dialog_about, null));
+            builder.setCancelable(false);
+            builder.setPositiveButton("Ok", ((dialog, which) -> dialog.cancel()));
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            ((TextView)dialog.findViewById(R.id.tvEmail)).setMovementMethod(LinkMovementMethod.getInstance());
+            ((TextView)dialog.findViewById(R.id.tvDataProvider)).setMovementMethod(LinkMovementMethod.getInstance());
         }
         return super.onOptionsItemSelected(item);
     }
@@ -69,6 +81,13 @@ public class MainActivity extends AppCompatActivity implements StationDownloader
         // UI Elements
         listStations = findViewById(R.id.listStations);
         btnEdit = findViewById(R.id.btnEdit);
+
+        // Dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(getLayoutInflater().inflate(R.layout.dialog_wait, null));
+        builder.setCancelable(false);
+        waitDialog = builder.create();
+        waitDialog.show();
 
         // Interactions
         listStations.setOnItemClickListener((parent, view, position, id) -> startStationActivity((int)id));
@@ -101,7 +120,10 @@ public class MainActivity extends AppCompatActivity implements StationDownloader
     private void checkUpdate() {
         if(listElements.size() >= elementsCount) {
             StationsListAdapter listAdapter = new StationsListAdapter(getApplicationContext(), listElements);
-            runOnUiThread(() -> listStations.setAdapter(listAdapter));
+            runOnUiThread(() -> {
+                listStations.setAdapter(listAdapter);
+                waitDialog.cancel();
+            });
         }
     }
 

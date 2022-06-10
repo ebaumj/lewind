@@ -38,8 +38,10 @@ public class StationsListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
         convertView = inflater.inflate(R.layout.station_list_element, null);
         TextView tvName = convertView.findViewById(R.id.tvStationNameList);
+        tvName.setTypeface(convertView.getResources().getFont(R.font.andika_new_basic));
         ImageView imgArrow = convertView.findViewById(R.id.imgArrowList);
         LinearLayout layoutColor = convertView.findViewById(R.id.layoutColorList);
 

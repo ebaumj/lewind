@@ -1,6 +1,7 @@
 package com.baumannsw.lewind;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.drawable.GradientDrawable;
@@ -32,6 +33,7 @@ public class StationActivity extends AppCompatActivity implements StationDownloa
     private ImageView imgRose;
     private FloatingActionButton btnReload, btnHistory;
     private ActionBar actionBar;
+    private AlertDialog waitDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,12 @@ public class StationActivity extends AppCompatActivity implements StationDownloa
 
         actionBar.setTitle(name);
 
+        // Dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(getLayoutInflater().inflate(R.layout.dialog_wait, null));
+        builder.setCancelable(false);
+        waitDialog = builder.create();
+
         btnReload.setOnClickListener(v -> loadData());
         btnHistory.setOnClickListener(v -> {Toast.makeText(getApplicationContext(), "History not implemented yet!", Toast.LENGTH_SHORT).show();});
 
@@ -64,8 +72,10 @@ public class StationActivity extends AppCompatActivity implements StationDownloa
     }
 
     private void loadData() {
-        if(id > 0)
+        if(id > 0) {
+            waitDialog.show();
             new StationDownloader(this, id).execute();
+        }
         else
             Toast.makeText(getApplicationContext(), getResources().getString(R.string.invalid_id), Toast.LENGTH_SHORT).show();
     }
@@ -153,12 +163,16 @@ public class StationActivity extends AppCompatActivity implements StationDownloa
             if(data.getLastUpdateMin() != null) {
                 tvUpdate.setText(getResources().getString(R.string.last_updated_minutes, data.getLastUpdateMinString()));
             }
+            waitDialog.cancel();
         });
     }
 
     @Override
     public void onStationDownloadFailed(String errorMessage, long id) {
         Log.e(TAG, errorMessage);
-        runOnUiThread(() -> Toast.makeText(getApplicationContext(), getResources().getString(R.string.station_download_failed), Toast.LENGTH_SHORT).show());
+        runOnUiThread(() -> {
+            waitDialog.cancel();
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.station_download_failed), Toast.LENGTH_SHORT).show();
+        });
     }
 }

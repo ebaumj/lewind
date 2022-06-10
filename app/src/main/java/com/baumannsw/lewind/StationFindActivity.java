@@ -2,15 +2,20 @@ package com.baumannsw.lewind;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baumannsw.lewind.stations.StationMap;
@@ -30,6 +35,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -47,7 +53,9 @@ public class StationFindActivity extends AppCompatActivity implements OnMapReady
     StationsDataAccessObject stationsDatabase;
     //FusedLocationProviderClient locationClient;
 
-    private Button btnAdd;
+    private ImageButton btnAdd;
+    private TextView tvAdd;
+    private AlertDialog waitDialog;
 
     private final long[] ids = {34971, 15265, 2429, 41825, 2478, 31320};
     private final String[] names = {"St-Blaise - Club Ichtus", "Estavayer", "STATION D'YVBEACH", "Cudrefin", "La Brévine", "Lac de Joux - Altitude 1004"};
@@ -63,6 +71,16 @@ public class StationFindActivity extends AppCompatActivity implements OnMapReady
         actionBar.setTitle(R.string.activity_title_find);
 
         btnAdd = findViewById(R.id.btnAddStation);
+        btnAdd.setVisibility(View.INVISIBLE);
+        tvAdd = findViewById(R.id.tvAddStation);
+        tvAdd.setText(R.string.btn_add_station);
+
+        // Dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(getLayoutInflater().inflate(R.layout.dialog_wait, null));
+        builder.setCancelable(false);
+        waitDialog = builder.create();
+        waitDialog.show();
 
         //locationClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -89,11 +107,14 @@ public class StationFindActivity extends AppCompatActivity implements OnMapReady
             if(stationsDatabase.findById(station.getId()) == null)
                 googleMap.addMarker(new MarkerOptions().position(new LatLng(station.getLatitude(), station.getLongitude()))).setTag(station.getId());
         googleMap.setOnMarkerClickListener(this);
+        waitDialog.cancel();
     }
 
     @Override
     public boolean onMarkerClick(@NonNull Marker marker) {
         long id = (long)marker.getTag();
+        if(this.marker != null)
+            this.marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
         this.marker = marker;
         new StationDownloader(this, id).execute();
         return false;
@@ -101,12 +122,16 @@ public class StationFindActivity extends AppCompatActivity implements OnMapReady
 
     @Override
     public void onStationDownloadCompleted(StationData data, long id) {
-        btnAdd.setText(getResources().getString(R.string.btn_add_station_found, data.getName()));
+        marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+        tvAdd.setText(data.getName());
+        btnAdd.setVisibility(View.VISIBLE);
         btnAdd.setOnClickListener(v -> {
             if(stationsDatabase.findById(data.getId()) == null) {
                 stationsDatabase.insert(new WindStation(data.getId(), data.getName(), data.getLatitude(), data.getLongitude()));
                 marker.remove();
-                btnAdd.setText(R.string.btn_add_station);
+                marker = null;
+                tvAdd.setText(R.string.btn_add_station);
+                btnAdd.setVisibility(View.INVISIBLE);
             }
         });
     }
@@ -114,7 +139,8 @@ public class StationFindActivity extends AppCompatActivity implements OnMapReady
     @Override
     public void onStationDownloadFailed(String errorMessage, long id) {
         Toast.makeText(getApplicationContext(), R.string.station_info_fail, Toast.LENGTH_SHORT);
-        btnAdd.setText(R.string.btn_add_station);
+        tvAdd.setText(R.string.btn_add_station);
+        btnAdd.setVisibility(View.INVISIBLE);
     }
 
     @Override

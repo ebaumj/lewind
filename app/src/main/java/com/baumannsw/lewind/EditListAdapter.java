@@ -1,6 +1,7 @@
 package com.baumannsw.lewind;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.ContentInfo;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,7 +53,9 @@ public class EditListAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         view = inflater.inflate(R.layout.edit_list_item, null);
         TextView tvName = view.findViewById(R.id.tvNameEditList);
+        tvName.setTypeface(view.getResources().getFont(R.font.andika_new_basic));
         TextView tvId = view.findViewById(R.id.tvEditListId);
+        tvId.setTypeface(view.getResources().getFont(R.font.andika_new_basic));
         ImageButton btnEdit = view.findViewById(R.id.imgEdit);
         btnEdit.setImageDrawable(view.getResources().getDrawable(android.R.drawable.ic_menu_edit, context.getTheme()));
         ImageButton btnDelete = view.findViewById(R.id.imgDelete);

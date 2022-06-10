@@ -35,4 +35,9 @@
     <color name="wind_48">#b40032</color>
     <color name="wind_50">#c80064</color>
     <color name="wind_52">#fe0096</color>
+
+    <color name="rose_dark">#1C2834</color>
+    <color name="rose_light">#96A2AE</color>
+    <color name="rose_red">#C80000</color>
+    <color name="rose_dark_red">#730000</color>
 </resources>

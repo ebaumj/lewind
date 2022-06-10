@@ -5,13 +5,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.baumannsw.lewind.stations.StationsDataAccessObject;
 import com.baumannsw.lewind.stations.StationsDatabase;
@@ -58,34 +57,35 @@ public class EditActivity extends AppCompatActivity implements EditListAdapter.E
 
     public void deleteElement(long id) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getResources().getString(R.string.dialog_delete_text, stationsDatabase.findById(id).getDisplayName()));
+        builder.setCancelable(false);
+        builder.setView(getLayoutInflater().inflate(R.layout.dialog_delete, null));
         builder.setPositiveButton(R.string.dialog_ok, (dialog, which) -> {
             stationsDatabase.delete(stationsDatabase.findById(id));
             EditListAdapter adapter = new EditListAdapter(getApplicationContext(), (ArrayList<WindStation>) stationsDatabase.getAll(), this);
             runOnUiThread(() -> listView.setAdapter(adapter));
         });
         builder.setNegativeButton(R.string.dialog_cancel, (dialog, which) -> { });
-        builder.create().show();
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        ((TextView)dialog.findViewById(R.id.tvNameDelete)).setText(stationsDatabase.findById(id).getDisplayName());
     }
 
-    public void editElement(long id) {AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        final EditText txtName = new EditText(this);
-        LinearLayout.LayoutParams layout = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        txtName.setLayoutParams(layout);
-        txtName.setText(stationsDatabase.findById(id).getDisplayName());
-
-        builder.setTitle(getResources().getString(R.string.dialog_edit_text, stationsDatabase.findById(id).getDisplayName()));
+    public void editElement(long id) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
+        builder.setView(getLayoutInflater().inflate(R.layout.dialog_edit, null));
         builder.setPositiveButton(R.string.dialog_ok, (dialog, which) -> {
             WindStation station = new WindStation(stationsDatabase.findById(id));
             stationsDatabase.delete(stationsDatabase.findById(id));
-            station.setDisplayName(txtName.getText().toString());
+            station.setDisplayName(((EditText)((AlertDialog)dialog).findViewById(R.id.txtNameEdit)).getText().toString());
             stationsDatabase.insert(station);
             EditListAdapter adapter = new EditListAdapter(getApplicationContext(), (ArrayList<WindStation>) stationsDatabase.getAll(), this);
             runOnUiThread(() -> listView.setAdapter(adapter));
         });
         builder.setNegativeButton(R.string.dialog_cancel, (dialog, which) -> { });
-        builder.setView(txtName);
-        builder.create().show();
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        ((EditText)dialog.findViewById(R.id.txtNameEdit)).setText(stationsDatabase.findById(id).getDisplayName());
+        ((TextView)dialog.findViewById(R.id.tvNameEdit)).setText(stationsDatabase.findById(id).getDisplayName());
     }
 }

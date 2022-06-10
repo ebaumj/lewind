@@ -1,5 +1,11 @@
 <resources>
+    <!-- About App -->
     <string name="app_name">Le Wind</string>
+    <string name="app_version">1.0.0</string>
+    <string name="creator">Janis M. Baumann</string>
+    <string name="data_provider"><a href="https://letskite.ch/">letskite.ch</a></string>
+    <string name="email"><a href="mailto:janis.baumann@gmail.com">janis.baumann@gmail.com</a></string>
+    <!-- Symbols and Units -->
     <string name="not_found_symbol">-</string>
     <string name="wind_unit"> kts</string>
     <string name="temp_unit"> °C</string>
@@ -18,18 +24,20 @@
     <string name="label_humidity">Humidity</string>
     <string name="label_preassure">Pressure</string>
     <string name="label_last_update">Last Updated:</string>
-    <!-- Other -->
-    <string name="last_updated_minutes">%1$s ago</string>
-    <string name="activity_title_station_data">Wind Station Data</string>
-    <string name="activity_title_main">Stations</string>
-    <string name="activity_title_edit">Edit Stations</string>
-    <string name="activity_title_find">Find Stations</string>
+    <string name="label_version">Version</string>
+    <string name="label_creator">Creator</string>
+    <string name="label_data_provider">Wind Data from</string>
+    <string name="label_email">Email Address</string>
+    <!-- Dialog -->
     <string name="dialog_ok">Ok</string>
     <string name="dialog_cancel">Cancel</string>
-    <string name="dialog_delete_text">Delete Station %1$s</string>
-    <string name="dialog_edit_text">Rename Station %1$s</string>
-    <string name="dialog_edit_original_name">Original Name: %1$s</string>
-    <string name="title_activity_station_finder">StationFinderActivity</string>
-    <string name="btn_add_station_found">Add %1$s</string>
+    <string name="dialog_delete_text">Delete</string>
+    <string name="dialog_edit_text">Rename</string>
+    <string name="dialog_wait_text">Loading Resources</string>
+    <!-- Activity Title -->
+    <string name="activity_title_edit">Edit Stations</string>
+    <string name="activity_title_find">Find Stations</string>
+    <!-- Other -->
+    <string name="last_updated_minutes">%1$s ago</string>
     <string name="btn_add_station">Click on Station</string>
 </resources>

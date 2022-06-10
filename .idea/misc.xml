@@ -3,18 +3,31 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Janis M. Baumann/Desktop/gitWork/lewind/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.367" />
+        <entry key="..\:/Users/Janis M. Baumann/Desktop/gitWork/lewind/app/src/main/res/drawable/btn_style.xml" value="0.3445" />
         <entry key="..\:/Users/Janis M. Baumann/Desktop/gitWork/lewind/app/src/main/res/drawable/gust_container.xml" value="0.314" />
+        <entry key="..\:/Users/Janis M. Baumann/Desktop/gitWork/lewind/app/src/main/res/drawable/ic_launcher_background.xml" value="0.367" />
         <entry key="..\:/Users/Janis M. Baumann/Desktop/gitWork/lewind/app/src/main/res/drawable/listview_gradient.xml" value="0.313" />
         <entry key="..\:/Users/Janis M. Baumann/Desktop/gitWork/lewind/app/src/main/res/drawable/rounded_corner_container.xml" value="0.3725" />
+        <entry key="..\:/Users/Janis M. Baumann/Desktop/gitWork/lewind/app/src/main/res/drawable/rounded_corners.xml" value="0.366" />
         <entry key="..\:/Users/Janis M. Baumann/Desktop/gitWork/lewind/app/src/main/res/drawable/windspeed_container.xml" value="0.314" />
+        <entry key="..\:/Users/Janis M. Baumann/Desktop/gitWork/lewind/app/src/main/res/font/andika_new_basic.xml" value="0.403125" />
         <entry key="..\:/Users/Janis M. Baumann/Desktop/gitWork/lewind/app/src/main/res/layout/activity_edit.xml" value="0.3729166666666667" />
-        <entry key="..\:/Users/Janis M. Baumann/Desktop/gitWork/lewind/app/src/main/res/layout/activity_main.xml" value="0.39166666666666666" />
+        <entry key="..\:/Users/Janis M. Baumann/Desktop/gitWork/lewind/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/Users/Janis M. Baumann/Desktop/gitWork/lewind/app/src/main/res/layout/activity_station.xml" value="0.39166666666666666" />
         <entry key="..\:/Users/Janis M. Baumann/Desktop/gitWork/lewind/app/src/main/res/layout/activity_station_find.xml" value="0.3109375" />
         <entry key="..\:/Users/Janis M. Baumann/Desktop/gitWork/lewind/app/src/main/res/layout/activity_station_finder.xml" value="0.3109375" />
+        <entry key="..\:/Users/Janis M. Baumann/Desktop/gitWork/lewind/app/src/main/res/layout/dialog_about.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/Janis M. Baumann/Desktop/gitWork/lewind/app/src/main/res/layout/dialog_delete.xml" value="0.34148550724637683" />
+        <entry key="..\:/Users/Janis M. Baumann/Desktop/gitWork/lewind/app/src/main/res/layout/dialog_edit.xml" value="0.3401268115942029" />
+        <entry key="..\:/Users/Janis M. Baumann/Desktop/gitWork/lewind/app/src/main/res/layout/dialog_wait.xml" value="0.3090828924162258" />
+        <entry key="..\:/Users/Janis M. Baumann/Desktop/gitWork/lewind/app/src/main/res/layout/edit_dialog.xml" value="0.3401268115942029" />
         <entry key="..\:/Users/Janis M. Baumann/Desktop/gitWork/lewind/app/src/main/res/layout/edit_list_item.xml" value="0.3729166666666667" />
         <entry key="..\:/Users/Janis M. Baumann/Desktop/gitWork/lewind/app/src/main/res/layout/fragment_maps.xml" value="0.3109375" />
         <entry key="..\:/Users/Janis M. Baumann/Desktop/gitWork/lewind/app/src/main/res/layout/station_list_element.xml" value="0.3109375" />
+        <entry key="..\:/Users/Janis M. Baumann/Desktop/gitWork/lewind/app/src/main/res/layout/switch_item.xml" value="0.3401268115942029" />
+        <entry key="..\:/Users/Janis M. Baumann/Desktop/gitWork/lewind/app/src/main/res/menu/main.xml" value="0.3729166666666667" />
+        <entry key="..\:/Users/Janis M. Baumann/Desktop/gitWork/lewind/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.367" />
         <entry key="..\:/Users/Janis/AndroidStudioProjects/LeWind/app/src/main/res/layout/activity_main.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/Janis/Desktop/gitWork/LeWind/app/src/main/res/drawable/gust_container.xml" value="0.252" />
         <entry key="..\:/Users/Janis/Desktop/gitWork/LeWind/app/src/main/res/drawable/listview_gradient.xml" value="0.252" />
