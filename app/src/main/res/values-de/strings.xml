@@ -35,7 +35,7 @@
     <string name="dialog_edit_text">Umbenennen</string>
     <string name="dialog_wait_text">Lade Ressourcen</string>
     <!-- Activity Title -->
-    <string name="activity_title_edit">Sattionen bearbeiten</string>
+    <string name="activity_title_edit">Stationen bearbeiten</string>
     <string name="activity_title_find">Stationen finden</string>
     <!-- Other -->
     <string name="last_updated_minutes">vor %1$s</string>
