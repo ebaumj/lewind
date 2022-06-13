@@ -169,7 +169,7 @@ public class StationActivity extends AppCompatActivity implements StationDownloa
 
     @Override
     public void onStationDownloadFailed(String errorMessage, long id) {
-        Log.e(TAG, errorMessage);
+        //Log.e(TAG, errorMessage);
         runOnUiThread(() -> {
             waitDialog.cancel();
             Toast.makeText(getApplicationContext(), getResources().getString(R.string.station_download_failed), Toast.LENGTH_SHORT).show();

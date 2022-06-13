@@ -31,6 +31,7 @@
     <!-- Dialog -->
     <string name="dialog_ok">Ok</string>
     <string name="dialog_cancel">Abbrechen</string>
+    <string name="dialog_close">Schliessen</string>
     <string name="dialog_delete_text">Löschen</string>
     <string name="dialog_edit_text">Umbenennen</string>
     <string name="dialog_wait_text">Lade Ressourcen</string>

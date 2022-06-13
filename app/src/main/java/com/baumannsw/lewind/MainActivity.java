@@ -60,8 +60,7 @@ public class MainActivity extends AppCompatActivity implements StationDownloader
         if(item.getItemId() == R.id.action_info) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setView(getLayoutInflater().inflate(R.layout.dialog_about, null));
-            builder.setCancelable(false);
-            builder.setPositiveButton("Ok", ((dialog, which) -> dialog.cancel()));
+            builder.setPositiveButton(R.string.dialog_close, ((dialog, which) -> dialog.cancel()));
             AlertDialog dialog = builder.create();
             dialog.show();
             ((TextView)dialog.findViewById(R.id.tvEmail)).setMovementMethod(LinkMovementMethod.getInstance());
@@ -87,7 +86,6 @@ public class MainActivity extends AppCompatActivity implements StationDownloader
         builder.setView(getLayoutInflater().inflate(R.layout.dialog_wait, null));
         builder.setCancelable(false);
         waitDialog = builder.create();
-        waitDialog.show();
 
         // Interactions
         listStations.setOnItemClickListener((parent, view, position, id) -> startStationActivity((int)id));
@@ -106,6 +104,8 @@ public class MainActivity extends AppCompatActivity implements StationDownloader
     private void updateFromDatabase() {
         listElements = new ArrayList<>();
         elementsCount = stationsDatabase.count();
+        if(elementsCount > 0)
+            waitDialog.show();
         for (WindStation station : stationsDatabase.getAll())
             new StationDownloader(this, station.getId()).execute();
     }

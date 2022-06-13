@@ -37,7 +37,7 @@ public class WindStationsDownloader extends AsyncTask<String, String, String> {
         try {
             connection = (HttpURLConnection) new URL(urlText).openConnection();
             int responseCode = connection.getResponseCode();
-            Log.i("Downloader", "Code: " + responseCode);
+            //Log.i("Downloader", "Code: " + responseCode);
             if(responseCode == 200) {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 text = reader.readLine();
@@ -46,7 +46,7 @@ public class WindStationsDownloader extends AsyncTask<String, String, String> {
                 caller.onDownloadFailed("HTTP Code: " + responseCode);
             connection.disconnect();
         } catch (Exception e) {
-            Log.e("Downloader", "Exception: " + e.getMessage());
+            //Log.e("Downloader", "Exception: " + e.getMessage());
             caller.onDownloadFailed(e.getMessage());
         }
         return text;
