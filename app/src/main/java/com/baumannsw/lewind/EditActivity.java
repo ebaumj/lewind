@@ -46,7 +46,11 @@ public class EditActivity extends AppCompatActivity implements EditListAdapter.E
             Intent intent = new Intent(getApplicationContext(), StationFindActivity.class);
             startActivity(intent);
         });
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         // Database
         new Thread(() -> {
             stationsDatabase = Room.databaseBuilder(getApplicationContext(), StationsDatabase.class, "WindStationsDatabase").allowMainThreadQueries().build().stationsDao();

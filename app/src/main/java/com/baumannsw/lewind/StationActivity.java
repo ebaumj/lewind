@@ -74,7 +74,7 @@ public class StationActivity extends AppCompatActivity implements StationDownloa
     private void loadData() {
         if(id > 0) {
             waitDialog.show();
-            new StationDownloader(this, id).execute();
+            new StationDownloader(this, id, getResources().getInteger(R.integer.timeout_http_connection_ms)).execute();
         }
         else
             Toast.makeText(getApplicationContext(), getResources().getString(R.string.invalid_id), Toast.LENGTH_SHORT).show();

@@ -20,10 +20,12 @@ public class WindStationsDownloader extends AsyncTask<String, String, String> {
     private WindStationsDownloaderCaller caller;
     private final String urlText = "https://letskite.ch/datas/map/stations/";
     private ArrayList<StationMap> data;
+    private int connectionTimeout;
 
-    public WindStationsDownloader(WindStationsDownloaderCaller caller) {
+    public WindStationsDownloader(WindStationsDownloaderCaller caller, int connectionTimeout) {
         this.caller = caller;
         data = new ArrayList<>();
+        this.connectionTimeout = connectionTimeout;
     }
 
     /**
@@ -36,18 +38,16 @@ public class WindStationsDownloader extends AsyncTask<String, String, String> {
         HttpURLConnection connection;
         try {
             connection = (HttpURLConnection) new URL(urlText).openConnection();
+            connection.setConnectTimeout(connectionTimeout);
             int responseCode = connection.getResponseCode();
             //Log.i("Downloader", "Code: " + responseCode);
             if(responseCode == 200) {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 text = reader.readLine();
             }
-            else
-                caller.onDownloadFailed("HTTP Code: " + responseCode);
             connection.disconnect();
         } catch (Exception e) {
             //Log.e("Downloader", "Exception: " + e.getMessage());
-            caller.onDownloadFailed(e.getMessage());
         }
         return text;
     }

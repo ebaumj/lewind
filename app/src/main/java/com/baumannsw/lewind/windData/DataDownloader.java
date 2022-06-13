@@ -17,10 +17,12 @@ public class DataDownloader extends AsyncTask<String, String, String> {
     private DataDownloaderCaller caller;
     private String urlText;
     private List<WindDataPoint> data;
+    private int connectionTimeout;
 
-    public DataDownloader(DataDownloaderCaller caller, long id) {
+    public DataDownloader(DataDownloaderCaller caller, long id, int connectionTimeout) {
         this.caller = caller;
         this.urlText = "https://letskite.ch/datas/station/" + id + "/graph";
+        this.connectionTimeout = connectionTimeout;
     }
 
     @Override
@@ -29,18 +31,16 @@ public class DataDownloader extends AsyncTask<String, String, String> {
         HttpURLConnection connection;
         try {
             connection = (HttpURLConnection) new URL(urlText).openConnection();
+            connection.setConnectTimeout(connectionTimeout);
             int responseCode = connection.getResponseCode();
             //Log.i("Downloader", "Code: " + responseCode);
             if(responseCode == 200) {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 text = reader.readLine();
             }
-            else
-                caller.onDownloadFailed("HTTP Code: " + responseCode);
             connection.disconnect();
         } catch (Exception e) {
             //Log.e("Downloader", "Exception: " + e.getMessage());
-            caller.onDownloadFailed(e.getMessage());
         }
         return text;
     }

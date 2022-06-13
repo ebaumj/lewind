@@ -42,7 +42,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
-public class StationFindActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, StationDownloaderCaller, WindStationsDownloaderCaller {
+public class StationFindActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener, StationDownloaderCaller, WindStationsDownloaderCaller {
 
     private final String TAG = "FIND_ACTIVITY";
     private final LatLng homeLocation = new LatLng(46.9196377, 7.4081305);
@@ -86,7 +86,7 @@ public class StationFindActivity extends AppCompatActivity implements OnMapReady
 
         new Thread(() -> {
             stationsDatabase = Room.databaseBuilder(getApplicationContext(), StationsDatabase.class, "WindStationsDatabase").allowMainThreadQueries().build().stationsDao();
-            new WindStationsDownloader(this).execute();
+            new WindStationsDownloader(this, getResources().getInteger(R.integer.timeout_http_connection_ms)).execute();
         }).run();
     }
 
@@ -107,16 +107,19 @@ public class StationFindActivity extends AppCompatActivity implements OnMapReady
             if(stationsDatabase.findById(station.getId()) == null)
                 googleMap.addMarker(new MarkerOptions().position(new LatLng(station.getLatitude(), station.getLongitude()))).setTag(station.getId());
         googleMap.setOnMarkerClickListener(this);
+        googleMap.setOnMapClickListener(this);
         waitDialog.cancel();
     }
 
     @Override
     public boolean onMarkerClick(@NonNull Marker marker) {
+        //Log.i(TAG, "Marker Clicked");
         long id = (long)marker.getTag();
         if(this.marker != null)
             this.marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
         this.marker = marker;
-        new StationDownloader(this, id).execute();
+        waitDialog.show();
+        new StationDownloader(this, id, getResources().getInteger(R.integer.timeout_http_connection_ms)).execute();
         return false;
     }
 
@@ -134,6 +137,7 @@ public class StationFindActivity extends AppCompatActivity implements OnMapReady
                 btnAdd.setVisibility(View.INVISIBLE);
             }
         });
+        waitDialog.cancel();
     }
 
     @Override
@@ -141,6 +145,7 @@ public class StationFindActivity extends AppCompatActivity implements OnMapReady
         Toast.makeText(getApplicationContext(), R.string.station_info_fail, Toast.LENGTH_SHORT);
         tvAdd.setText(R.string.btn_add_station);
         btnAdd.setVisibility(View.INVISIBLE);
+        waitDialog.cancel();
     }
 
     @Override
@@ -153,5 +158,14 @@ public class StationFindActivity extends AppCompatActivity implements OnMapReady
     public void onDownloadFailed(String errorMessage) {
         Toast.makeText(getApplicationContext(), R.string.all_stations_fail, Toast.LENGTH_SHORT).show();
         this.finish();
+    }
+
+    @Override
+    public void onMapClick(@NonNull LatLng latLng) {
+        //Log.i(TAG, "Map Clicked");
+        if(this.marker != null)
+            this.marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+        tvAdd.setText(R.string.btn_add_station);
+        btnAdd.setVisibility(View.INVISIBLE);
     }
 }

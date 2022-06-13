@@ -24,11 +24,12 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/btn_style"
+        android:contentDescription="Add Selected Station to your List"
         android:elevation="10dp"
-        android:tint="@color/rose_red"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:srcCompat="@android:drawable/ic_input_add"
+        app:tint="@color/rose_red" />
 
     <TextView
         android:id="@+id/tvAddStation"

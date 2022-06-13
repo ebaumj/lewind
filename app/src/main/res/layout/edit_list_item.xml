@@ -33,13 +33,13 @@
         android:layout_height="50dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/btn_style"
-        android:contentDescription="Edit"
+        android:contentDescription="Rename Station"
         android:elevation="5dp"
-        android:tint="@color/rose_red"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/imgDelete"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_edit" />
+        app:srcCompat="@android:drawable/ic_menu_edit"
+        app:tint="@color/rose_red" />
 
     <ImageButton
         android:id="@+id/imgDelete"
@@ -47,13 +47,13 @@
         android:layout_height="50dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/btn_style"
-        android:contentDescription="Delete"
+        android:contentDescription="Delete Station"
         android:elevation="5dp"
-        android:tint="@color/rose_red"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_delete" />
+        app:srcCompat="@android:drawable/ic_menu_delete"
+        app:tint="@color/rose_red" />
 
     <LinearLayout
         android:layout_width="0dp"

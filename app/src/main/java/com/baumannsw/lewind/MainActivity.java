@@ -8,6 +8,7 @@ import androidx.room.Room;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
@@ -94,7 +95,13 @@ public class MainActivity extends AppCompatActivity implements StationDownloader
             startActivity(intent);
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         // Setup Database and get Data
+        waitDialog.show();
         new Thread(() -> {
             stationsDatabase = Room.databaseBuilder(getApplicationContext(), StationsDatabase.class, "WindStationsDatabase").allowMainThreadQueries().build().stationsDao();
             updateFromDatabase();
@@ -104,10 +111,15 @@ public class MainActivity extends AppCompatActivity implements StationDownloader
     private void updateFromDatabase() {
         listElements = new ArrayList<>();
         elementsCount = stationsDatabase.count();
-        if(elementsCount > 0)
-            waitDialog.show();
+        if(elementsCount == 0) {
+            StationsListAdapter listAdapter = new StationsListAdapter(getApplicationContext(), listElements);
+            runOnUiThread(() -> {
+                listStations.setAdapter(listAdapter);
+                waitDialog.cancel();
+            });
+        }
         for (WindStation station : stationsDatabase.getAll())
-            new StationDownloader(this, station.getId()).execute();
+            new StationDownloader(this, station.getId(), getResources().getInteger(R.integer.timeout_http_connection_ms)).execute();
     }
 
     private void startStationActivity(int id) {

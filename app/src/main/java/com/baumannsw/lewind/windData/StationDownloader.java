@@ -3,6 +3,8 @@ package com.baumannsw.lewind.windData;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.baumannsw.lewind.R;
+
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -16,11 +18,13 @@ public class StationDownloader extends AsyncTask<String, String, String> {
     private String urlText;
     private StationData data;
     private long id;
+    private int connectionTimeout;
 
-    public StationDownloader(StationDownloaderCaller caller, long id) {
+    public StationDownloader(StationDownloaderCaller caller, long id, int connectionTimeout) {
         this.caller = caller;
         urlText = "https://letskite.ch/datas/station/" + id;
         this.id = id;
+        this.connectionTimeout = connectionTimeout;
     }
 
     @Override
@@ -29,18 +33,16 @@ public class StationDownloader extends AsyncTask<String, String, String> {
         HttpURLConnection connection;
         try {
             connection = (HttpURLConnection) new URL(urlText).openConnection();
+            connection.setConnectTimeout(connectionTimeout);
             int responseCode = connection.getResponseCode();
             //Log.i("Downloader", "Code: " + responseCode);
             if(responseCode == 200) {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 text = reader.readLine();
             }
-            else
-                caller.onStationDownloadFailed("HTTP Code: " + responseCode, id);
             connection.disconnect();
         } catch (Exception e) {
             //Log.e("Downloader", "Exception: " + e.getMessage());
-            caller.onStationDownloadFailed(e.getMessage(), id);
         }
         return text;
     }
