@@ -10,19 +10,21 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DataDownloader extends AsyncTask<String, String, String> {
 
     private DataDownloaderCaller caller;
     private String urlText;
-    private List<WindDataPoint> data;
     private int connectionTimeout;
+    ArrayList<WindDataPoint> data;
 
     public DataDownloader(DataDownloaderCaller caller, long id, int connectionTimeout) {
         this.caller = caller;
         this.urlText = "https://letskite.ch/datas/station/" + id + "/graph";
         this.connectionTimeout = connectionTimeout;
+        data = new ArrayList<>();
     }
 
     @Override
@@ -47,6 +49,8 @@ public class DataDownloader extends AsyncTask<String, String, String> {
 
     @Override
     protected void onPostExecute(String s) {
+        if(s == null)
+            s = " ";
         super.onPostExecute(s);
         JSONArray json;
         try {

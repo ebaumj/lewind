@@ -43,6 +43,9 @@ dependencies {
     def maps_version = "17.0.1"
     def room_version = "2.4.2"
 
+    // Charts
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
     // Fragment
     implementation "androidx.fragment:fragment:$fragment_version"
 

@@ -41,4 +41,11 @@
     <!-- Other -->
     <string name="last_updated_minutes">%1$s ago</string>
     <string name="btn_add_station">Click on Station</string>
+    <!-- Dropdown Menu -->
+    <string-array name="times_array">
+        <item name="dropdown_6h" value="6">last 6h</item>
+        <item name="dropdown_12h" value="12">last 12h</item>
+        <item name="dropdown_24h" value="24">last 24h</item>
+        <item name="dropdown_48h" value="48">last 48h</item>
+    </string-array>
 </resources>

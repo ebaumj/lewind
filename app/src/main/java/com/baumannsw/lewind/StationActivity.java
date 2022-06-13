@@ -4,6 +4,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -66,9 +67,22 @@ public class StationActivity extends AppCompatActivity implements StationDownloa
         waitDialog = builder.create();
 
         btnReload.setOnClickListener(v -> loadData());
-        btnHistory.setOnClickListener(v -> {Toast.makeText(getApplicationContext(), "History not implemented yet!", Toast.LENGTH_SHORT).show();});
+        btnHistory.setOnClickListener(v -> startHistoryActivity());
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         loadData();
+    }
+
+    private void startHistoryActivity() {
+        //Toast.makeText(getApplicationContext(), "History not implemented yet!", Toast.LENGTH_SHORT).show();
+        // TODO: Station Activity needs id and name when History is closed!
+        Intent intent = new Intent(getApplicationContext(), HistoryActivity.class);
+        intent.putExtra(HistoryActivity.EXTRA_STATION_ID, id);
+        intent.putExtra(HistoryActivity.EXTRA_STATION_NAME, name);
+        startActivity(intent);
     }
 
     private void loadData() {

@@ -49,6 +49,8 @@ public class StationDownloader extends AsyncTask<String, String, String> {
 
     @Override
     protected void onPostExecute(String s) {
+        if(s == null)
+            s = " ";
         super.onPostExecute(s);
         JSONObject json;
         try {
