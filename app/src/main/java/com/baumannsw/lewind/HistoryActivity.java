@@ -103,6 +103,8 @@ public class HistoryActivity extends AppCompatActivity implements DataDownloader
         if(historyData.size() == 0)
             return;
 
+        chart = findViewById(R.id.chartHistory);
+
         ArrayList<Entry> windValues = new ArrayList<Entry>();
         ArrayList<Entry> gustValues = new ArrayList<Entry>();
         Calendar cal = Calendar.getInstance();
@@ -144,12 +146,6 @@ public class HistoryActivity extends AppCompatActivity implements DataDownloader
         dataSets.add(windDataSet);
         dataSets.add(gustsDataSet);
 
-        /*cal = Calendar.getInstance();
-        chart.getXAxis().setAxisMaximum(cal.get(Calendar.SECOND));
-        cal.setTime(lastDate);
-        chart.getXAxis().setAxisMinimum(cal.get(Calendar.SECOND));*/
-
-
         chart.getXAxis().setValueFormatter(new IndexAxisValueFormatter() {
             private final SimpleDateFormat sdf = new SimpleDateFormat("dd.MM HH:mm", Locale.GERMAN);
 
@@ -170,7 +166,8 @@ public class HistoryActivity extends AppCompatActivity implements DataDownloader
         chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         chart.getAxisRight().setEnabled(false);
         chart.getDescription().setEnabled(false);
-        chart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+
+        /*chart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
                 if (e == null)
@@ -181,13 +178,6 @@ public class HistoryActivity extends AppCompatActivity implements DataDownloader
                 //chart.getBarBounds((BarEntry) e, bounds);
                 MPPointF position = chart.getPosition(e, YAxis.AxisDependency.LEFT);
 
-                /*Log.i("bounds", bounds.toString());
-                Log.i("position", position.toString());
-
-                Log.i("x-index",
-                        "low: " + chart.getLowestVisibleX() + ", high: "
-                                + chart.getHighestVisibleX());*/
-
                 MPPointF.recycleInstance(position);
             }
 
@@ -195,8 +185,14 @@ public class HistoryActivity extends AppCompatActivity implements DataDownloader
             public void onNothingSelected() {
 
             }
-        });
-        runOnUiThread(() -> chart.setData(new LineData(dataSets)));
+        });*/
+        chart.setData(new LineData(dataSets));
+        chart.getData().notifyDataChanged();
+        chart.notifyDataSetChanged();
+
+        ChartMarker marker = new ChartMarker(getApplicationContext(), R.layout.marker_view, lastDate, windDataSet, gustsDataSet);
+        marker.setChartView(chart);
+        chart.setMarker(marker);
     }
 
     @Override
