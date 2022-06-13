@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:theme="@style/Theme.LeWind">
 
     <TextView
         android:id="@+id/tvNameEditList"
@@ -35,6 +36,7 @@
         android:background="@drawable/btn_style"
         android:contentDescription="Rename Station"
         android:elevation="5dp"
+        android:tint="@color/rose_red"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/imgDelete"
         app:layout_constraintTop_toTopOf="parent"
@@ -49,6 +51,8 @@
         android:background="@drawable/btn_style"
         android:contentDescription="Delete Station"
         android:elevation="5dp"
+        android:theme="@style/Theme.LeWind"
+        android:tint="@color/rose_red"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

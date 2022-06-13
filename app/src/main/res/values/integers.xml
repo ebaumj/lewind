@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="timeout_http_connection_ms">2000</integer>
+    <integer name="timeout_http_connection_ms">5000</integer>
 </resources>

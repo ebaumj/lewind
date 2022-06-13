@@ -51,7 +51,7 @@ public class StationFindActivity extends AppCompatActivity implements OnMapReady
     private ArrayList<StationMap> allStations = new ArrayList<>();
     private Marker marker;
     StationsDataAccessObject stationsDatabase;
-    //FusedLocationProviderClient locationClient;
+    FusedLocationProviderClient locationClient;
 
     private ImageButton btnAdd;
     private TextView tvAdd;
@@ -82,7 +82,7 @@ public class StationFindActivity extends AppCompatActivity implements OnMapReady
         waitDialog = builder.create();
         waitDialog.show();
 
-        //locationClient = LocationServices.getFusedLocationProviderClient(this);
+        locationClient = LocationServices.getFusedLocationProviderClient(this);
 
         new Thread(() -> {
             stationsDatabase = Room.databaseBuilder(getApplicationContext(), StationsDatabase.class, "WindStationsDatabase").allowMainThreadQueries().build().stationsDao();
@@ -97,11 +97,11 @@ public class StationFindActivity extends AppCompatActivity implements OnMapReady
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
-        /*locationClient.getLastLocation().addOnSuccessListener(location -> {
+        locationClient.getLastLocation().addOnSuccessListener(location -> {
             if(location != null)
                 googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), zoom));
-        });*/
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(homeLocation, zoom));
+        });
+        //googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(homeLocation, zoom));
 
         for (StationMap station : allStations)
             if(stationsDatabase.findById(station.getId()) == null)
