@@ -106,7 +106,7 @@ public class StationData {
     public String getLastUpdateString(String format) {
         if(lastUpdate == null)
             return null;
-        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.GERMAN);
+        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.getDefault());
         sdf.setTimeZone(TimeZone.getDefault());
         return sdf.format(lastUpdate);
     }

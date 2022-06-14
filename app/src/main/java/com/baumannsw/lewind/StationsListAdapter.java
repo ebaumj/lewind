@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.baumannsw.lewind.stations.WindStation;
+import com.baumannsw.lewind.windData.WindColor;
 
 import java.util.ArrayList;
 
@@ -54,42 +55,10 @@ public class StationsListAdapter extends BaseAdapter {
         }
         if(stations.get(position).getWind() != null) {
             int[] colors;
-            int index = (int)(stations.get(position).getWind()/2);
-            ArrayList<Integer> colorList = new ArrayList<>();
-            colorList.clear();
-            colorList.add(convertView.getResources().getColor(R.color.wind_0, context.getTheme()));
-            colorList.add(convertView.getResources().getColor(R.color.wind_2, context.getTheme()));
-            colorList.add(convertView.getResources().getColor(R.color.wind_4, context.getTheme()));
-            colorList.add(convertView.getResources().getColor(R.color.wind_6, context.getTheme()));
-            colorList.add(convertView.getResources().getColor(R.color.wind_8, context.getTheme()));
-            colorList.add(convertView.getResources().getColor(R.color.wind_10, context.getTheme()));
-            colorList.add(convertView.getResources().getColor(R.color.wind_12, context.getTheme()));
-            colorList.add(convertView.getResources().getColor(R.color.wind_14, context.getTheme()));
-            colorList.add(convertView.getResources().getColor(R.color.wind_16, context.getTheme()));
-            colorList.add(convertView.getResources().getColor(R.color.wind_18, context.getTheme()));
-            colorList.add(convertView.getResources().getColor(R.color.wind_20, context.getTheme()));
-            colorList.add(convertView.getResources().getColor(R.color.wind_22, context.getTheme()));
-            colorList.add(convertView.getResources().getColor(R.color.wind_24, context.getTheme()));
-            colorList.add(convertView.getResources().getColor(R.color.wind_26, context.getTheme()));
-            colorList.add(convertView.getResources().getColor(R.color.wind_28, context.getTheme()));
-            colorList.add(convertView.getResources().getColor(R.color.wind_30, context.getTheme()));
-            colorList.add(convertView.getResources().getColor(R.color.wind_32, context.getTheme()));
-            colorList.add(convertView.getResources().getColor(R.color.wind_34, context.getTheme()));
-            colorList.add(convertView.getResources().getColor(R.color.wind_36, context.getTheme()));
-            colorList.add(convertView.getResources().getColor(R.color.wind_38, context.getTheme()));
-            colorList.add(convertView.getResources().getColor(R.color.wind_40, context.getTheme()));
-            colorList.add(convertView.getResources().getColor(R.color.wind_42, context.getTheme()));
-            colorList.add(convertView.getResources().getColor(R.color.wind_44, context.getTheme()));
-            colorList.add(convertView.getResources().getColor(R.color.wind_46, context.getTheme()));
-            colorList.add(convertView.getResources().getColor(R.color.wind_48, context.getTheme()));
-            colorList.add(convertView.getResources().getColor(R.color.wind_50, context.getTheme()));
-            colorList.add(convertView.getResources().getColor(R.color.wind_52, context.getTheme()));
             GradientDrawable gradient = (GradientDrawable) convertView.getResources().getDrawable(R.drawable.listview_gradient, context.getTheme()).getConstantState().newDrawable();
             gradient.mutate();
-            if(index >= colorList.size())
-                index = colorList.size() - 1;
             colors = gradient.getColors();
-            colors[0] = colorList.get(index);
+            colors[0] = WindColor.getWindColor(context, stations.get(position).getWind());
             gradient.setColors(colors);
             layoutColor.setBackground(gradient);
         }

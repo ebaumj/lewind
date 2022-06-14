@@ -1,14 +1,21 @@
 package com.baumannsw.lewind;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -44,7 +51,6 @@ public class HistoryActivity extends AppCompatActivity implements DataDownloader
     public static final String EXTRA_STATION_ID = "com.baumannsw.lewind.STATION_ID";
 
     private final String TAG = "HISTORY_ACTIVITY";
-    private final RectF valueSelected = new RectF();
 
     private int timeValue;
     private ArrayList<WindDataPoint> historyData;
@@ -54,7 +60,7 @@ public class HistoryActivity extends AppCompatActivity implements DataDownloader
     private ActionBar actionBar;
     private AlertDialog waitDialog;
     private Spinner dropdownTimeSelect;
-    private LineChart chart;
+    private LineChart chart, chartTemp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +78,7 @@ public class HistoryActivity extends AppCompatActivity implements DataDownloader
         // UI
         dropdownTimeSelect = findViewById(R.id.dropdownTimeSelect);
         chart = findViewById(R.id.chartHistory);
+        chartTemp = findViewById(R.id.chartTemperature);
 
         // Dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -95,23 +102,30 @@ public class HistoryActivity extends AppCompatActivity implements DataDownloader
 
 
         // Get Data
-        waitDialog.show();
-        new DataDownloader(this, id, getResources().getInteger(R.integer.timeout_http_connection_ms)).execute();
+        if(id > 0) {
+            waitDialog.show();
+            new DataDownloader(this, id, getResources().getInteger(R.integer.timeout_http_connection_ms)).execute();
+        }
+        else {
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.invalid_id), Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
 
     private void loadChart() {
         if(historyData.size() == 0)
             return;
 
-        chart = findViewById(R.id.chartHistory);
-
-        ArrayList<Entry> windValues = new ArrayList<Entry>();
-        ArrayList<Entry> gustValues = new ArrayList<Entry>();
+        ArrayList<Entry> windValues = new ArrayList<>();
+        ArrayList<Entry> gustValues = new ArrayList<>();
+        ArrayList<Entry> tempValues = new ArrayList<>();
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.HOUR, -timeValue);
         Date lastDate = cal.getTime();
 
-        int i = 0;
+        double maximum = 0;
+        double tempMax = 0;
+        double tempMin = 0;
 
         for(WindDataPoint dataPoint : historyData) {
             if(dataPoint.getDate().after(lastDate)) {
@@ -119,12 +133,21 @@ public class HistoryActivity extends AppCompatActivity implements DataDownloader
                 float milliseconds = (float) difference;
                 windValues.add(new Entry(milliseconds, (float)dataPoint.getAverage()));
                 gustValues.add(new Entry(milliseconds, (float)dataPoint.getGust()));
+                tempValues.add(new Entry(milliseconds, (float)dataPoint.getTemperature()));
+                if(dataPoint.getAverage() > maximum)
+                    maximum = dataPoint.getAverage();
+                if(dataPoint.getGust() > maximum)
+                    maximum = dataPoint.getGust();
+                if(dataPoint.getTemperature() > tempMax)
+                    tempMax = dataPoint.getTemperature();
+                if(dataPoint.getTemperature() < tempMin)
+                    tempMin = dataPoint.getTemperature();
             }
-            i++;
         }
 
-        LineDataSet windDataSet = new LineDataSet(windValues, "Wind");
-        LineDataSet gustsDataSet = new LineDataSet(gustValues, "Gusts");
+        LineDataSet windDataSet = new LineDataSet(windValues, getResources().getString(R.string.label_wind));
+        LineDataSet gustsDataSet = new LineDataSet(gustValues, getResources().getString(R.string.label_gust));
+        LineDataSet tempDataSet = new LineDataSet(tempValues, getResources().getString(R.string.label_temperature));
 
         windDataSet.setColor(getResources().getColor(R.color.rose_dark, getTheme()));
         windDataSet.setDrawIcons(false);
@@ -132,6 +155,8 @@ public class HistoryActivity extends AppCompatActivity implements DataDownloader
         windDataSet.setDrawValues(false);
         windDataSet.setDrawFilled(false);
         windDataSet.setDrawHorizontalHighlightIndicator(false);
+        windDataSet.setHighLightColor(getResources().getColor(R.color.rose_dark_red, getTheme()));
+        windDataSet.setHighlightLineWidth((float)1.2);
         windDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
 
         gustsDataSet.setColor(getResources().getColor(R.color.rose_red, getTheme()));
@@ -140,14 +165,26 @@ public class HistoryActivity extends AppCompatActivity implements DataDownloader
         gustsDataSet.setDrawValues(false);
         gustsDataSet.setDrawFilled(false);
         gustsDataSet.setDrawHorizontalHighlightIndicator(false);
+        gustsDataSet.setHighLightColor(getResources().getColor(R.color.rose_dark_red, getTheme()));
+        gustsDataSet.setHighlightLineWidth((float)1.2);
         gustsDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+
+        tempDataSet.setColor(getResources().getColor(R.color.rose_dark, getTheme()));
+        tempDataSet.setDrawIcons(false);
+        tempDataSet.setDrawCircles(false);
+        tempDataSet.setDrawValues(false);
+        tempDataSet.setDrawFilled(false);
+        tempDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
 
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.add(windDataSet);
         dataSets.add(gustsDataSet);
 
+        ArrayList<ILineDataSet> dataSets2 = new ArrayList<>();
+        dataSets2.add(tempDataSet);
+
         chart.getXAxis().setValueFormatter(new IndexAxisValueFormatter() {
-            private final SimpleDateFormat sdf = new SimpleDateFormat("dd.MM HH:mm", Locale.GERMAN);
+            private final SimpleDateFormat sdf = new SimpleDateFormat("dd.MM HH:mm", Locale.getDefault());
 
             @Override
             public String getFormattedValue(float value) {
@@ -160,39 +197,69 @@ public class HistoryActivity extends AppCompatActivity implements DataDownloader
         chart.getLegend().setTypeface(getResources().getFont(R.font.andika_new_basic));
         chart.getXAxis().setTypeface(getResources().getFont(R.font.andika_new_basic));
         chart.getAxisLeft().setTypeface(getResources().getFont(R.font.andika_new_basic));
+        chart.getAxisLeft().setAxisMinimum(0);
+        chart.getAxisLeft().setAxisMaximum((float) (maximum * 1.5));
 
 
         chart.getXAxis().setLabelCount(4);
         chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         chart.getAxisRight().setEnabled(false);
         chart.getDescription().setEnabled(false);
+        chart.setScaleEnabled(false);
+        chart.setDragEnabled(false);
+        chart.animateX(500);
 
-        /*chart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-            @Override
-            public void onValueSelected(Entry e, Highlight h) {
-                if (e == null)
-                    return;
-
-                RectF bounds = valueSelected;
-                chart.getClipBounds();
-                //chart.getBarBounds((BarEntry) e, bounds);
-                MPPointF position = chart.getPosition(e, YAxis.AxisDependency.LEFT);
-
-                MPPointF.recycleInstance(position);
-            }
+        chartTemp.getXAxis().setValueFormatter(new IndexAxisValueFormatter() {
+            private final SimpleDateFormat sdf = new SimpleDateFormat("dd.MM HH:mm", Locale.getDefault());
 
             @Override
-            public void onNothingSelected() {
-
+            public String getFormattedValue(float value) {
+                cal.setTime(lastDate);
+                cal.add(Calendar.MILLISECOND, (int) value);
+                sdf.setTimeZone(TimeZone.getDefault());
+                return sdf.format(cal.getTime());
             }
-        });*/
+        });
+        chartTemp.getLegend().setTypeface(getResources().getFont(R.font.andika_new_basic));
+        chartTemp.getXAxis().setTypeface(getResources().getFont(R.font.andika_new_basic));
+        chartTemp.getAxisLeft().setTypeface(getResources().getFont(R.font.andika_new_basic));
+        chartTemp.getAxisLeft().setAxisMinimum((float) (tempMin * 1.1));
+        chartTemp.getAxisLeft().setAxisMaximum((float) (tempMax * 1.1));
+
+        chartTemp.getXAxis().setLabelCount(4);
+        chartTemp.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        chartTemp.getAxisRight().setEnabled(false);
+        chartTemp.getDescription().setEnabled(false);
+        chartTemp.setScaleEnabled(false);
+        chartTemp.setDragEnabled(false);
+        chartTemp.setTouchEnabled(false);
+        chartTemp.animateX(500);
+
         chart.setData(new LineData(dataSets));
-        chart.getData().notifyDataChanged();
-        chart.notifyDataSetChanged();
-
         ChartMarker marker = new ChartMarker(getApplicationContext(), R.layout.marker_view, lastDate, windDataSet, gustsDataSet);
         marker.setChartView(chart);
         chart.setMarker(marker);
+
+        chartTemp.setData(new LineData(dataSets2));
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        intent.putExtra(StationActivity.EXTRA_STATION_NAME, name);
+        intent.putExtra(StationActivity.EXTRA_STATION_ID, id);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Intent intent = new Intent();
+        intent.putExtra(StationActivity.EXTRA_STATION_NAME, name);
+        intent.putExtra(StationActivity.EXTRA_STATION_ID, id);
+        setResult(RESULT_OK, intent);
+        finish();
+        return true;
     }
 
     @Override
@@ -208,7 +275,6 @@ public class HistoryActivity extends AppCompatActivity implements DataDownloader
             waitDialog.cancel();
             Toast.makeText(getApplicationContext(), getResources().getString(R.string.station_download_failed), Toast.LENGTH_SHORT).show();
         });
-        // TODO: finish Activity or place Reload Button
         finish();
     }
 }

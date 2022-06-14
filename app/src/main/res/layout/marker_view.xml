@@ -16,9 +16,9 @@
         android:layout_marginRight="5dp"
         android:ellipsize="end"
         android:singleLine="true"
-        android:text="25.06.2022 16:35"
+        android:text="25. September 2022 16:35"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@android:color/white"
+        android:textColor="@color/white"
         android:textSize="12sp" />
 
     <TextView
@@ -33,7 +33,7 @@
         android:singleLine="true"
         android:text="Windspeed: 25kts"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@android:color/white"
+        android:textColor="@color/white"
         android:textSize="12sp" />
 
     <TextView
@@ -48,7 +48,7 @@
         android:singleLine="true"
         android:text="Gusts: 28kts"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@android:color/white"
+        android:textColor="@color/white"
         android:textSize="12sp" />
 
 </RelativeLayout>

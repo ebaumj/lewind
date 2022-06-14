@@ -56,7 +56,7 @@ public class WindDataPoint {
     public String getDateString(String format) {
         if(date == null)
             return null;
-        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.GERMAN);
+        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.getDefault());
         sdf.setTimeZone(TimeZone.getDefault());
         return sdf.format(date);
     }

@@ -21,7 +21,8 @@ import java.util.TimeZone;
 
 public class ChartMarker extends MarkerView {
 
-    private final SimpleDateFormat sdf = new SimpleDateFormat("dd.MMMM.YYYY HH:mm", Locale.GERMAN);
+    private final SimpleDateFormat sdf = new SimpleDateFormat("dd. MMMM YYYY HH:mm", Locale.GERMAN);
+    //private final SimpleDateFormat sdf = new SimpleDateFormat("dd. September YYYY HH:mm", Locale.GERMAN);
 
     private TextView tvDate, tvWind, tvGust;
     private Date lastDate;
@@ -41,6 +42,7 @@ public class ChartMarker extends MarkerView {
         tvDate = findViewById(R.id.tvMarkerDate);
         tvWind = findViewById(R.id.tvMarkerWind);
         tvGust = findViewById(R.id.tvMarkerGust);
+        sdf.setTimeZone(TimeZone.getDefault());
     }
 
     private MPPointF mOffset;
@@ -54,10 +56,12 @@ public class ChartMarker extends MarkerView {
      */
     @Override
     public MPPointF getOffsetForDrawingAtPoint(float posX, float posY) {
-        if(mOffset == null) {
-            mOffset = new MPPointF(-(getWidth() / 2), -getHeight());
-        }
-        return mOffset;
+        float xOffset = -(getWidth() / 2);
+        if(posX < (getWidth()/2))
+            xOffset = -posX;
+        if((getChartView().getWidth() - posX) < (getWidth() / 2))
+            xOffset = -(getWidth() - (getChartView().getWidth() - posX));
+        return new MPPointF(xOffset, -getHeight());
     }
 
     /**
@@ -75,11 +79,11 @@ public class ChartMarker extends MarkerView {
         cal.add(Calendar.MILLISECOND, (int) e.getX());
         sdf.setTimeZone(TimeZone.getDefault());
         tvDate.setText(sdf.format(cal.getTime()));
-        tvWind.setText("Wind: " + getChartView().getData().getDataSetByIndex(0).getEntryForIndex(index).getY());
-        tvGust.setText("Gust: " + getChartView().getData().getDataSetByIndex(1).getEntryForIndex(index).getY());
-        tvDate.setTypeface(getResources().getFont(R.font.andika_new_basic));
-        tvWind.setTypeface(getResources().getFont(R.font.andika_new_basic));
-        tvGust.setTypeface(getResources().getFont(R.font.andika_new_basic));
+        tvWind.setText(getResources().getString(R.string.label_wind) + ": " + getChartView().getData().getDataSetByIndex(0).getEntryForIndex(index).getY() + " " + getResources().getString(R.string.wind_unit));
+        tvGust.setText(getResources().getString(R.string.label_gust) + ": " + getChartView().getData().getDataSetByIndex(1).getEntryForIndex(index).getY() + " " + getResources().getString(R.string.wind_unit));
+        tvDate.setTypeface(getResources().getFont(R.font.andika_new_basic_bold));
+        tvWind.setTypeface(getResources().getFont(R.font.andika_new_basic_bold));
+        tvGust.setTypeface(getResources().getFont(R.font.andika_new_basic_bold));
         super.refreshContent(e, highlight);
     }
 }

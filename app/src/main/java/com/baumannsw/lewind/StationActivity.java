@@ -1,8 +1,16 @@
 package com.baumannsw.lewind;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityOptionsCompat;
 
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
@@ -17,6 +25,7 @@ import android.widget.Toast;
 import com.baumannsw.lewind.windData.StationData;
 import com.baumannsw.lewind.windData.StationDownloader;
 import com.baumannsw.lewind.windData.StationDownloaderCaller;
+import com.baumannsw.lewind.windData.WindColor;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -36,10 +45,20 @@ public class StationActivity extends AppCompatActivity implements StationDownloa
     private ActionBar actionBar;
     private AlertDialog waitDialog;
 
+    private ActivityResultLauncher<Intent> historyActivityLauncher;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_station);
+
+        historyActivityLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                (result) -> {
+                    id = result.getData().getIntExtra(EXTRA_STATION_ID, 0);
+                    name = result.getData().getStringExtra(EXTRA_STATION_NAME);
+                    loadData();
+                });
 
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -82,7 +101,7 @@ public class StationActivity extends AppCompatActivity implements StationDownloa
         Intent intent = new Intent(getApplicationContext(), HistoryActivity.class);
         intent.putExtra(HistoryActivity.EXTRA_STATION_ID, id);
         intent.putExtra(HistoryActivity.EXTRA_STATION_NAME, name);
-        startActivity(intent);
+        historyActivityLauncher.launch(intent);
     }
 
     private void loadData() {
@@ -96,56 +115,20 @@ public class StationActivity extends AppCompatActivity implements StationDownloa
 
     private void setWindSpeedColors(Double wind, Double gusts) {
         int[] colors;
-        int index;
-        ArrayList<Integer> colorList = new ArrayList<>();
-        colorList.clear();
-        colorList.add(getResources().getColor(R.color.wind_0, getTheme()));
-        colorList.add(getResources().getColor(R.color.wind_2, getTheme()));
-        colorList.add(getResources().getColor(R.color.wind_4, getTheme()));
-        colorList.add(getResources().getColor(R.color.wind_6, getTheme()));
-        colorList.add(getResources().getColor(R.color.wind_8, getTheme()));
-        colorList.add(getResources().getColor(R.color.wind_10, getTheme()));
-        colorList.add(getResources().getColor(R.color.wind_12, getTheme()));
-        colorList.add(getResources().getColor(R.color.wind_14, getTheme()));
-        colorList.add(getResources().getColor(R.color.wind_16, getTheme()));
-        colorList.add(getResources().getColor(R.color.wind_18, getTheme()));
-        colorList.add(getResources().getColor(R.color.wind_20, getTheme()));
-        colorList.add(getResources().getColor(R.color.wind_22, getTheme()));
-        colorList.add(getResources().getColor(R.color.wind_24, getTheme()));
-        colorList.add(getResources().getColor(R.color.wind_26, getTheme()));
-        colorList.add(getResources().getColor(R.color.wind_28, getTheme()));
-        colorList.add(getResources().getColor(R.color.wind_30, getTheme()));
-        colorList.add(getResources().getColor(R.color.wind_32, getTheme()));
-        colorList.add(getResources().getColor(R.color.wind_34, getTheme()));
-        colorList.add(getResources().getColor(R.color.wind_36, getTheme()));
-        colorList.add(getResources().getColor(R.color.wind_38, getTheme()));
-        colorList.add(getResources().getColor(R.color.wind_40, getTheme()));
-        colorList.add(getResources().getColor(R.color.wind_42, getTheme()));
-        colorList.add(getResources().getColor(R.color.wind_44, getTheme()));
-        colorList.add(getResources().getColor(R.color.wind_46, getTheme()));
-        colorList.add(getResources().getColor(R.color.wind_48, getTheme()));
-        colorList.add(getResources().getColor(R.color.wind_50, getTheme()));
-        colorList.add(getResources().getColor(R.color.wind_52, getTheme()));
         LinearLayout windLayout = findViewById(R.id.backWind);
         LinearLayout gustLayout = findViewById(R.id.backGust);
         GradientDrawable windGradient = (GradientDrawable) getResources().getDrawable((R.drawable.windspeed_container), getTheme());
         GradientDrawable gustGradient = (GradientDrawable) getResources().getDrawable((R.drawable.gust_container), getTheme());
         if(wind != null) {
-            index = (int)(wind/2);
-            if(index >= colorList.size())
-                index = colorList.size() - 1;
             colors = windGradient.getColors();
-            colors[0] = colorList.get(index);
+            colors[0] = WindColor.getWindColor(getApplicationContext(), wind);//colorList.get(index);
             windGradient.setColors(colors);
             windLayout.setBackground(windGradient);
             windLayout.setElevation(10);
         }
         if(gusts != null) {
-            index = (int)(gusts/2);
-            if(index >= colorList.size())
-                index = colorList.size() - 1;
             colors = gustGradient.getColors();
-            colors[0] = colorList.get(index);
+            colors[0] = WindColor.getWindColor(getApplicationContext(), gusts);
             gustGradient.setColors(colors);
             gustLayout.setBackground(gustGradient);
             gustLayout.setElevation(10);
