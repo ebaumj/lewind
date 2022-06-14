@@ -102,6 +102,9 @@ public class StationFindActivity extends AppCompatActivity implements OnMapReady
                 googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), zoom));
         });
         //googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(homeLocation, zoom));
+        googleMap.getUiSettings().setMapToolbarEnabled(false);
+        googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+        googleMap.getUiSettings().setIndoorLevelPickerEnabled(false);
 
         for (StationMap station : allStations)
             if(stationsDatabase.findById(station.getId()) == null)

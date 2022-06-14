@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements StationDownloader
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         MenuItem item = findViewById(R.id.action_info);
+        item.setContentDescription("Info");
         return super.onCreateOptionsMenu(menu);
     }
 
