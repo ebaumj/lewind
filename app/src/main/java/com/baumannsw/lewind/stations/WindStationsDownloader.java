@@ -39,6 +39,7 @@ public class WindStationsDownloader extends AsyncTask<String, String, String> {
         try {
             connection = (HttpURLConnection) new URL(urlText).openConnection();
             connection.setConnectTimeout(connectionTimeout);
+            connection.setReadTimeout(connectionTimeout);
             int responseCode = connection.getResponseCode();
             //Log.i("Downloader", "Code: " + responseCode);
             if(responseCode == 200) {
