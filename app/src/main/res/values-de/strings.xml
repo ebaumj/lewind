@@ -1,7 +1,7 @@
 <resources>
     <!-- About App -->
     <string name="app_name">Le Wind</string>
-    <string name="app_version">1.0.0</string>
+    <string name="app_version">1.2.0</string>
     <string name="creator">Janis M. Baumann</string>
     <string name="data_provider"><a href="https://letskite.ch/">letskite.ch</a></string>
     <string name="email"><a href="mailto:janis.baumann@gmail.com">janis.baumann@gmail.com</a></string>

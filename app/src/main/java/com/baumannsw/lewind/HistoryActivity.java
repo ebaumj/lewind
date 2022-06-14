@@ -245,21 +245,22 @@ public class HistoryActivity extends AppCompatActivity implements DataDownloader
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent();
-        intent.putExtra(StationActivity.EXTRA_STATION_NAME, name);
-        intent.putExtra(StationActivity.EXTRA_STATION_ID, id);
-        setResult(RESULT_OK, intent);
         finish();
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        finish();
+        return true;
+    }
+
+    @Override
+    public void finish() {
         Intent intent = new Intent();
         intent.putExtra(StationActivity.EXTRA_STATION_NAME, name);
         intent.putExtra(StationActivity.EXTRA_STATION_ID, id);
         setResult(RESULT_OK, intent);
-        finish();
-        return true;
+        super.finish();
     }
 
     @Override
