@@ -206,7 +206,8 @@ public class HistoryActivity extends AppCompatActivity implements DataDownloader
         chart.getAxisRight().setEnabled(false);
         chart.getDescription().setEnabled(false);
         chart.setScaleEnabled(false);
-        chart.setDragEnabled(false);
+        //chart.setDragEnabled(true);
+        chart.setHighlightPerDragEnabled(true);
         chart.animateX(500);
 
         chartTemp.getXAxis().setValueFormatter(new IndexAxisValueFormatter() {
