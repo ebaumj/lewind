@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements StationDownloader
             builder.setPositiveButton(R.string.dialog_close, ((dialog, which) -> dialog.cancel()));
             AlertDialog dialog = builder.create();
             dialog.show();
+            ((TextView)dialog.findViewById(R.id.tvAppVersion)).setText(BuildConfig.VERSION_NAME);
             ((TextView)dialog.findViewById(R.id.tvEmail)).setMovementMethod(LinkMovementMethod.getInstance());
             ((TextView)dialog.findViewById(R.id.tvDataProvider)).setMovementMethod(LinkMovementMethod.getInstance());
         }
