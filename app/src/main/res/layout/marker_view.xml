@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="100dp"
@@ -25,10 +26,10 @@
         android:id="@+id/tvMarkerWind"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="26dp"
-        android:layout_marginRight="5dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="30dp"
+        android:layout_toEndOf="@+id/imgDirectionMarker"
         android:ellipsize="end"
         android:singleLine="true"
         android:text="Windspeed: 25kts"
@@ -40,15 +41,25 @@
         android:id="@+id/tvMarkerGust"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="45dp"
-        android:layout_marginRight="5dp"
+        android:layout_below="@+id/tvMarkerWind"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="0dp"
+        android:layout_toEndOf="@+id/imgDirectionMarker"
         android:ellipsize="end"
         android:singleLine="true"
         android:text="Gusts: 28kts"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/white"
         android:textSize="12sp" />
+
+    <ImageView
+        android:id="@+id/imgDirectionMarker"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="34dp"
+        app:srcCompat="@drawable/left_arrow_icon_free_svg_file" />
 
 </RelativeLayout>

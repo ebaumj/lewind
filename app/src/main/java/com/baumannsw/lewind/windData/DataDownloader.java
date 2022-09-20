@@ -59,6 +59,7 @@ public class DataDownloader extends AsyncTask<String, String, String> {
             Exception ex = null;
             for(int i = 0; i < json.length(); i++)
                 try {
+                    WindDataPoint o = new WindDataPoint(json.getJSONArray(i));
                     data.add(new WindDataPoint(json.getJSONArray(i)));
                 } catch (Exception e) {
                     ex = e;

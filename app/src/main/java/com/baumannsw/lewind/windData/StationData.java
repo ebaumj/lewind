@@ -126,16 +126,6 @@ public class StationData {
 
     public Integer getDirection() { return direction; }
 
-    public String getDirectionString() {
-        String[] text = {"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"};
-        int index = 0;
-        if(direction < 385)
-            index = (int)(((float)direction + 11.25)/22.5);
-        if(index > 15)
-            index = 0;
-        return text[index];
-    }
-
     public Double getWindAvg() { return windAvg; }
 
     public Double getWindGust() { return windGust; }

@@ -21,11 +21,23 @@ public class WindDataPoint {
         if(temp != null)
             date = Date.from(Instant.ofEpochMilli(Long.parseLong(temp.toString())));
         temp = array.get(1);
-        if(temp != null)
-            average = (double) temp;
+        if(temp != null) {
+            if(temp.getClass() == String.class)
+                average = Double.parseDouble((String) temp);
+            else if(temp.getClass() == Integer.class)
+                average = new Double((int) temp);
+            else if(temp.getClass() == Double.class)
+                average = (double) temp;
+        }
         temp = array.get(2);
-        if(temp != null)
-            gust = (double) temp;
+        if(temp != null) {
+            if(temp.getClass() == String.class)
+                gust = Double.parseDouble((String) temp);
+            else if(temp.getClass() == Integer.class)
+                gust = new Double((int) temp);
+            else if(temp.getClass() == Double.class)
+                gust = (double) temp;
+        }
         temp = array.get(3);
         if(temp != null) {
             direction = (int) temp;
@@ -33,8 +45,14 @@ public class WindDataPoint {
                 direction -= 360;
         }
         temp = array.get(4);
-        if(temp != null)
-            temperature = Double.parseDouble((String) temp);
+        if(temp != null) {
+            if(temp.getClass() == String.class)
+                temperature = Double.parseDouble((String) temp);
+            else if(temp.getClass() == Integer.class)
+                temperature = new Double((int) temp);
+            else if(temp.getClass() == Double.class)
+                temperature = (double) temp;
+        }
     }
 
     public double getAverage() {
@@ -62,16 +80,9 @@ public class WindDataPoint {
     }
 
     public int getDirectionInt() {
-        return direction;
-    }
-
-    public String getDirectionString() {
-        String[] text = {"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"};
-        int index = 0;
-        if(direction < 385)
-            index = (int)(((float)direction + 11.25)/22.5);
-        if(index > 15)
-            index = 0;
-        return text[index];
+        if(direction >= 0)
+            return direction;
+        else
+            return direction + 360;
     }
 }

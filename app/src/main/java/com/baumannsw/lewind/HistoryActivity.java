@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.baumannsw.lewind.windData.DataDownloader;
 import com.baumannsw.lewind.windData.DataDownloaderCaller;
 import com.baumannsw.lewind.windData.WindDataPoint;
+import com.baumannsw.lewind.windData.WindDirection;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
@@ -127,27 +128,35 @@ public class HistoryActivity extends AppCompatActivity implements DataDownloader
         double tempMax = 0;
         double tempMin = 0;
 
+        boolean showTemperature = false;
+
         for(WindDataPoint dataPoint : historyData) {
             if(dataPoint.getDate().after(lastDate)) {
                 long difference = dataPoint.getDate().getTime() - lastDate.getTime();
                 float milliseconds = (float) difference;
                 windValues.add(new Entry(milliseconds, (float)dataPoint.getAverage()));
                 gustValues.add(new Entry(milliseconds, (float)dataPoint.getGust()));
-                tempValues.add(new Entry(milliseconds, (float)dataPoint.getTemperature()));
+                //tempValues.add(new Entry(milliseconds, (float)dataPoint.getTemperature()));
+                tempValues.add(new Entry(milliseconds, (float)dataPoint.getDirectionInt()));
                 if(dataPoint.getAverage() > maximum)
                     maximum = dataPoint.getAverage();
                 if(dataPoint.getGust() > maximum)
                     maximum = dataPoint.getGust();
-                if(dataPoint.getTemperature() > tempMax)
+                /*if(dataPoint.getTemperature() > tempMax)
                     tempMax = dataPoint.getTemperature();
                 if(dataPoint.getTemperature() < tempMin)
                     tempMin = dataPoint.getTemperature();
+                if(dataPoint.getTemperature() != 0)
+                    showTemperature = true;*/
             }
         }
 
+        tempMax = 360;
+        showTemperature = true;
+
         LineDataSet windDataSet = new LineDataSet(windValues, getResources().getString(R.string.label_wind));
         LineDataSet gustsDataSet = new LineDataSet(gustValues, getResources().getString(R.string.label_gust));
-        LineDataSet tempDataSet = new LineDataSet(tempValues, getResources().getString(R.string.label_temperature));
+        LineDataSet tempDataSet = new LineDataSet(tempValues, getResources().getString(R.string.label_direction));
 
         windDataSet.setColor(getResources().getColor(R.color.rose_dark, getTheme()));
         windDataSet.setDrawIcons(false);
@@ -199,6 +208,8 @@ public class HistoryActivity extends AppCompatActivity implements DataDownloader
         chart.getAxisLeft().setTypeface(getResources().getFont(R.font.andika_new_basic));
         chart.getAxisLeft().setAxisMinimum(0);
         chart.getAxisLeft().setAxisMaximum((float) (maximum * 1.5));
+        chartTemp.getAxisLeft().setMinWidth(20);
+        chartTemp.getAxisLeft().setMaxWidth(20);
 
 
         chart.getXAxis().setLabelCount(4);
@@ -221,11 +232,20 @@ public class HistoryActivity extends AppCompatActivity implements DataDownloader
                 return sdf.format(cal.getTime());
             }
         });
+        chartTemp.getAxisLeft().setValueFormatter(new IndexAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return WindDirection.getWindDirectionString((int) value);
+            }
+        });
+        chartTemp.getAxisLeft().setLabelCount(5, true);
         chartTemp.getLegend().setTypeface(getResources().getFont(R.font.andika_new_basic));
         chartTemp.getXAxis().setTypeface(getResources().getFont(R.font.andika_new_basic));
         chartTemp.getAxisLeft().setTypeface(getResources().getFont(R.font.andika_new_basic));
-        chartTemp.getAxisLeft().setAxisMinimum((float) (tempMin * 1.1));
-        chartTemp.getAxisLeft().setAxisMaximum((float) (tempMax * 1.1));
+        chartTemp.getAxisLeft().setAxisMinimum(0);
+        chartTemp.getAxisLeft().setAxisMaximum(360);
+        chartTemp.getAxisLeft().setMinWidth(20);
+        chartTemp.getAxisLeft().setMaxWidth(20);
 
         chartTemp.getXAxis().setLabelCount(4);
         chartTemp.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -237,11 +257,14 @@ public class HistoryActivity extends AppCompatActivity implements DataDownloader
         chartTemp.animateX(500);
 
         chart.setData(new LineData(dataSets));
-        ChartMarker marker = new ChartMarker(getApplicationContext(), R.layout.marker_view, lastDate, windDataSet, gustsDataSet);
+        ChartMarker marker = new ChartMarker(getApplicationContext(), R.layout.marker_view, lastDate, windDataSet, gustsDataSet, tempDataSet);
         marker.setChartView(chart);
         chart.setMarker(marker);
 
-        chartTemp.setData(new LineData(dataSets2));
+        if(showTemperature)
+            chartTemp.setData(new LineData(dataSets2));
+        else
+            chartTemp.setVisibility(LineChart.INVISIBLE);
     }
 
     @Override

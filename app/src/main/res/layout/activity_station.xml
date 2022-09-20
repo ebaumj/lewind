@@ -20,7 +20,7 @@
 
             <LinearLayout
                 android:id="@+id/backWind"
-                android:layout_width="150dp"
+                android:layout_width="140dp"
                 android:layout_height="100dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="24dp"
@@ -57,7 +57,7 @@
 
             <LinearLayout
                 android:id="@+id/backGust"
-                android:layout_width="150dp"
+                android:layout_width="140dp"
                 android:layout_height="100dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="32dp"

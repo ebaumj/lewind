@@ -22,6 +22,7 @@
     <string name="label_gust">Windböen</string>
     <string name="label_humidity">Luftfeuchtigkeit</string>
     <string name="label_preassure">Luftdruck</string>
+    <string name="label_direction">Windrichtung</string>
     <string name="label_last_update">Zuletzt aktualisiert:</string>
     <string name="label_version">Version</string>
     <string name="label_creator">Erstellt von</string>

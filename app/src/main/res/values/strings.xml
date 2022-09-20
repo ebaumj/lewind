@@ -22,6 +22,7 @@
     <string name="label_gust">Wind Gusts</string>
     <string name="label_humidity">Humidity</string>
     <string name="label_preassure">Pressure</string>
+    <string name="label_direction">Wind Direction</string>
     <string name="label_last_update">Last Updated:</string>
     <string name="label_version">Version</string>
     <string name="label_creator">Creator</string>

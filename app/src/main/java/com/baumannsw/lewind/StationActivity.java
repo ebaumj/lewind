@@ -26,6 +26,7 @@ import com.baumannsw.lewind.windData.StationData;
 import com.baumannsw.lewind.windData.StationDownloader;
 import com.baumannsw.lewind.windData.StationDownloaderCaller;
 import com.baumannsw.lewind.windData.WindColor;
+import com.baumannsw.lewind.windData.WindDirection;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -150,7 +151,7 @@ public class StationActivity extends AppCompatActivity implements StationDownloa
             if(data.getPreassure() != null)
                 tvPreassure.setText(Math.round(data.getPreassure()) + " " +  getResources().getString(R.string.preassure_unit));
             if(data.getDirection() != null) {
-                tvDirection.setText(data.getDirectionString() + "  " + data.getDirection() + " " +  getResources().getString(R.string.direction_unit));
+                tvDirection.setText(WindDirection.getWindDirectionString(data.getDirection()) + "  " + data.getDirection() + " " +  getResources().getString(R.string.direction_unit));
                 Integer dir = data.getDirection() + 180;
                 if(dir > 360)
                     dir = dir - 360;

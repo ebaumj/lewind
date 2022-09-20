@@ -2,6 +2,7 @@ package com.baumannsw.lewind;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.components.IMarker;
@@ -25,8 +26,9 @@ public class ChartMarker extends MarkerView {
     //private final SimpleDateFormat sdf = new SimpleDateFormat("dd. September YYYY HH:mm", Locale.GERMAN);
 
     private TextView tvDate, tvWind, tvGust;
+    private ImageView imgArrow;
     private Date lastDate;
-    private LineDataSet windData, gustData;
+    private LineDataSet windData, gustData, directionData;
 
     /**
      * Constructor. Sets up the MarkerView with a custom layout resource.
@@ -34,14 +36,17 @@ public class ChartMarker extends MarkerView {
      * @param context
      * @param layoutResource the layout resource to use for the MarkerView
      */
-    public ChartMarker(Context context, int layoutResource, Date lastDate, LineDataSet windData, LineDataSet gustData) {
+    public ChartMarker(Context context, int layoutResource, Date lastDate, LineDataSet windData, LineDataSet gustData, LineDataSet directionData) {
         super(context, layoutResource);
         this.lastDate = lastDate;
         this.windData = windData;
         this.gustData = gustData;
+        this.directionData = directionData;
         tvDate = findViewById(R.id.tvMarkerDate);
         tvWind = findViewById(R.id.tvMarkerWind);
         tvGust = findViewById(R.id.tvMarkerGust);
+        imgArrow = findViewById(R.id.imgDirectionMarker);
+        imgArrow.setImageDrawable(context.getResources().getDrawable(R.drawable.left_arrow_icon_free_svg_file, context.getTheme()));
         sdf.setTimeZone(TimeZone.getDefault());
     }
 
@@ -84,6 +89,14 @@ public class ChartMarker extends MarkerView {
         tvDate.setTypeface(getResources().getFont(R.font.andika_new_basic_bold));
         tvWind.setTypeface(getResources().getFont(R.font.andika_new_basic_bold));
         tvGust.setTypeface(getResources().getFont(R.font.andika_new_basic_bold));
+        imgArrow.setRotation(getRotation((int)directionData.getEntryForIndex(index).getY()));
         super.refreshContent(e, highlight);
+    }
+
+    private int getRotation(int direction) {
+        int rotation = direction + 270;
+        if(rotation > 360)
+            rotation -= 360;
+        return rotation;
     }
 }
