@@ -4,6 +4,9 @@ import org.json.JSONArray;
 
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -18,8 +21,12 @@ public class WindDataPoint {
     public WindDataPoint(JSONArray array) throws Exception {
         Object temp;
         temp = array.get(0);
-        if(temp != null)
-            date = Date.from(Instant.ofEpochMilli(Long.parseLong(temp.toString())));
+        if(temp != null) {
+            if(temp.getClass() == String.class)
+                date = Date.from(ZonedDateTime.parse((String) temp).toInstant());
+            else
+                date = Date.from(Instant.ofEpochMilli(Long.parseLong(temp.toString())));
+        }
         temp = array.get(1);
         if(temp != null) {
             if(temp.getClass() == String.class)
