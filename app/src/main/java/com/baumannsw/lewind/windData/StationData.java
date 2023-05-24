@@ -1,5 +1,7 @@
 package com.baumannsw.lewind.windData;
 
+import android.util.Log;
+
 import androidx.room.ColumnInfo;
 
 import org.json.JSONObject;
@@ -64,39 +66,41 @@ public class StationData {
         if(lastUpdateMin == null)
             try { lastUpdateMin = Integer.parseInt((String) data.get("last_update_min")); } catch(Exception e) { lastUpdateMin = null; }
 
-        try { humidity = (Double) data.get("humidite"); } catch(Exception e) { humidity = null; }
+        try { humidity = (Double) data.get("humidity"); } catch(Exception e) { humidity = null; }
         if(humidity == null)
-            try { humidity = new Double((Integer) data.get("humidite")); } catch(Exception e) { humidity = null; }
+            try { humidity = new Double((Integer) data.get("humidity")); } catch(Exception e) { humidity = null; }
         if(humidity == null)
-            try { humidity = Double.parseDouble((String) data.get("humidite")); } catch(Exception e) { humidity = null; }
+            try { humidity = Double.parseDouble((String) data.get("humidity")); } catch(Exception e) { humidity = null; }
 
-        try { direction = (Integer) data.get("vent_direction"); } catch(Exception e) { direction = null; }
+        try { direction = (Integer) data.get("wind_direction"); } catch(Exception e) { direction = null; }
         if(direction == null)
-            try { direction = Integer.parseInt((String) data.get("vent_direction")); } catch(Exception e) { direction = null; }
+            try { direction = ((Long)Math.round((Double) data.get("wind_direction"))).intValue(); } catch(Exception e) { direction = null; }
+        if(direction == null)
+            try { direction = Integer.parseInt((String) data.get("wind_direction")); } catch(Exception e) { direction = null; }
 
-        try { windAvg = (Double) data.get("vent_vitesse"); } catch(Exception e) { windAvg = null; }
+        try { windAvg = (Double) data.get("wind_speed"); } catch(Exception e) { windAvg = null; }
         if(windAvg == null)
-            try { windAvg = new Double((Integer) data.get("vent_vitesse")); } catch(Exception e) { windAvg = null; }
+            try { windAvg = new Double((Integer) data.get("wind_speed")); } catch(Exception e) { windAvg = null; }
         if(windAvg == null)
-            try { windAvg = Double.parseDouble((String) data.get("vent_vitesse")); } catch(Exception e) { windAvg = null; }
+            try { windAvg = Double.parseDouble((String) data.get("wind_speed")); } catch(Exception e) { windAvg = null; }
 
-        try { windGust = (Double) data.get("vent_rafale"); } catch(Exception e) { windGust = null; }
+        try { windGust = (Double) data.get("wind_gust"); } catch(Exception e) { windGust = null; }
         if(windGust == null)
-            try { windGust = new Double((Integer) data.get("vent_rafale")); } catch(Exception e) { windGust = null; }
+            try { windGust = new Double((Integer) data.get("wind_gust")); } catch(Exception e) { windGust = null; }
         if(windGust == null)
-            try { windGust = Double.parseDouble((String) data.get("vent_rafale")); } catch(Exception e) { windGust = null; }
+            try { windGust = Double.parseDouble((String) data.get("wind_gust")); } catch(Exception e) { windGust = null; }
 
-        try { temperature = (Double) data.get("temp"); } catch(Exception e) { temperature = null; }
+        try { temperature = (Double) data.get("temperature"); } catch(Exception e) { temperature = null; }
         if(temperature == null)
-            try { temperature = new Double((Integer) data.get("temp")); } catch(Exception e) { temperature = null; }
+            try { temperature = new Double((Integer) data.get("temperature")); } catch(Exception e) { temperature = null; }
         if(temperature == null)
-            try { temperature = Double.parseDouble((String) data.get("temp")); } catch(Exception e) { temperature = null; }
+            try { temperature = Double.parseDouble((String) data.get("temperature")); } catch(Exception e) { temperature = null; }
 
-        try { preassure = (Double) data.get("pression"); } catch(Exception e) { preassure = null; }
+        try { preassure = (Double) data.get("preassure"); } catch(Exception e) { preassure = null; }
         if(preassure == null)
-            try { preassure = new Double((Integer) data.get("pression")); } catch(Exception e) { preassure = null; }
+            try { preassure = new Double((Integer) data.get("preassure")); } catch(Exception e) { preassure = null; }
         if(preassure == null)
-            try { preassure = Double.parseDouble((String) data.get("pression")); } catch(Exception e) { preassure = null; }
+            try { preassure = Double.parseDouble((String) data.get("preassure")); } catch(Exception e) { preassure = null; }
 
         try { sourceLink = (String) data.get("source_lien"); } catch (Exception e) { sourceLink = null; }
     }

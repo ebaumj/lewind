@@ -22,7 +22,7 @@ public class DataDownloader extends AsyncTask<String, String, String> {
 
     public DataDownloader(DataDownloaderCaller caller, long id, int connectionTimeout) {
         this.caller = caller;
-        this.urlText = "https://letskite.ch/datas/station/" + id + "/graph";
+        this.urlText = "https://lewind.ch/api/android_access/history/" + id;
         this.connectionTimeout = connectionTimeout;
         data = new ArrayList<>();
     }

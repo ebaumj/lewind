@@ -22,7 +22,7 @@ public class StationDownloader extends AsyncTask<String, String, String> {
 
     public StationDownloader(StationDownloaderCaller caller, long id, int connectionTimeout) {
         this.caller = caller;
-        urlText = "https://letskite.ch/datas/station/" + id;
+        urlText = "https://lewind.ch/api/android_access/details/" + id;
         this.id = id;
         this.connectionTimeout = connectionTimeout;
     }

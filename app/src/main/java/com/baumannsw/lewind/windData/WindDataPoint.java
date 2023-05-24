@@ -47,7 +47,12 @@ public class WindDataPoint {
         }
         temp = array.get(3);
         if(temp != null) {
-            direction = (int) temp;
+            if(temp.getClass() == String.class)
+                direction = Integer.parseInt((String) temp);
+            else if(temp.getClass() == Integer.class)
+                direction = (int)temp;
+            else if(temp.getClass() == Double.class)
+                direction = ((Long)Math.round((Double)temp)).intValue();
             if (direction >= 360)
                 direction -= 360;
         }

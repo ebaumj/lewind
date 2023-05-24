@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class WindStationsDownloader extends AsyncTask<String, String, String> {
 
     private WindStationsDownloaderCaller caller;
-    private final String urlText = "https://letskite.ch/datas/map/stations/";
+    private final String urlText = "https://lewind.ch/api/android_access/all_stations";
     private ArrayList<StationMap> data;
     private int connectionTimeout;
 
@@ -60,7 +60,8 @@ public class WindStationsDownloader extends AsyncTask<String, String, String> {
         super.onPostExecute(s);
         JSONArray json;
         try {
-            json = new JSONObject(s).getJSONArray("stations");
+            //json = new JSONObject(s).getJSONArray("stations");
+            json = new JSONArray(s);
             Exception ex = null;
             for(int i = 0; i < json.length(); i++)
                 try {
