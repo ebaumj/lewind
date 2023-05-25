@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "968913770866",
-    "project_id": "lewindmetrics",
-    "storage_bucket": "lewindmetrics.appspot.com"
+    "project_number": "46739520222",
+    "project_id": "lewindapp",
+    "storage_bucket": "lewindapp.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:968913770866:android:1619f415ac38de8381a5eb",
+        "mobilesdk_app_id": "1:46739520222:android:575b2100e5b1825c2b204f",
         "android_client_info": {
           "package_name": "com.baumannsw.lewind"
         }
       },
       "oauth_client": [
         {
-          "client_id": "968913770866-mnfre1ivvuuqkod0tieveuf9vg1krut8.apps.googleusercontent.com",
+          "client_id": "46739520222-8j1esa1nedup02pkq6jtdebdlh2okrcs.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA--v0t8zxYfls0JfjGIHZhO56YufmxOaA"
+          "current_key": "AIzaSyDTRlBHs4sAoIpua9q72UVD4x2GTCVAwhM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "968913770866-mnfre1ivvuuqkod0tieveuf9vg1krut8.apps.googleusercontent.com",
+              "client_id": "46739520222-8j1esa1nedup02pkq6jtdebdlh2okrcs.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
