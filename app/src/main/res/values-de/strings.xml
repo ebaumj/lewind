@@ -2,7 +2,7 @@
     <!-- About App -->
     <string name="app_name">Le Wind</string>
     <string name="creator">Janis M. Baumann</string>
-    <string name="data_provider"><a href="https://letskite.ch/">letskite.ch</a></string>
+    <string name="data_provider"><a href="https://lewind.ch/">lewind.ch</a></string>
     <string name="email"><a href="mailto:janis.baumann@gmail.com">janis.baumann@gmail.com</a></string>
     <!-- Symbols and Units -->
     <string name="not_found_symbol">-</string>
@@ -26,8 +26,9 @@
     <string name="label_last_update">Zuletzt aktualisiert:</string>
     <string name="label_version">Version</string>
     <string name="label_creator">Erstellt von</string>
-    <string name="label_data_provider">Wetterdaten von</string>
+    <string name="label_data_provider">Webseite</string>
     <string name="label_email">Email</string>
+    <string name="label_no_longer_supported">Diese App wird nicht länger unterstützt. Alternativ kann die Web-Version <a href="https://lewind.ch/">lewind.ch</a> verwendet werden.</string>
     <!-- Dialog -->
     <string name="dialog_ok">Ok</string>
     <string name="dialog_cancel">Abbrechen</string>
